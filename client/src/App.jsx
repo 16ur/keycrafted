@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import Navbar from "./Components/Navbar/Navbar.jsx";
 import axios from "axios";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <>
+      <Navbar />
       {array.map((product) => (
         <div key={product.id}>
           <h2>{product.name}</h2>
@@ -31,6 +33,7 @@ function App() {
       ))}
     </>
   );
+  <Navbar />;
 }
 
 export default App;

@@ -1,0 +1,91 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  padding-top: 2rem;
+  color: black;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.navbar-logo {
+  flex-shrink: 0;
+}
+
+.navbar-logo a {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+
+.navbar-search {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.navbar-search input {
+  width: 95%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1.6px solid #28587b;
+  border-radius: 4px;
+  outline: none;
+}
+
+.navbar-search input:focus {
+  border: 2.3 px solid #28587b;
+  outline: none;
+}
+
+.navbar-icons {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.icon {
+  font-size: 1.8rem;
+  color: black;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: #28587b;
+}
+
+.navbar-buttons {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 1rem;
+  gap: 2.5rem;
+  padding-top: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 10rem;
+}
+
+.navbar-buttons button {
+  background-color: transparent;
+  border: none;
+  color: black;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.navbar-buttons button:hover {
+  text-decoration: underline;
+}
+
+.bottomNavbar {
+  padding: 1.2px;
+  background-color: #28587b87;
+  outline: none;
+  border: none;
+  width: 90%;
+  margin: 0 auto;
+}

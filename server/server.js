@@ -28,11 +28,9 @@ app.get("/api/products", async (req, res) => {
 
 app.use(express.json()); // Pour traiter les données JSON envoyées dans les requêtes POST
 
-// Route POST pour ajouter un nouveau produit
 app.post("/api/products", async (req, res) => {
   const { name, price, category, stock, description, imageUrl } = req.body;
 
-  // Créer un nouveau produit
   const newProduct = new Product({
     name,
     price,
