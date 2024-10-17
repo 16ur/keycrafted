@@ -2,14 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
+require("dotenv").config();
+
 const corsOptions = {
   origin: "http://localhost:5173",
 };
 
-mongoose.connect("mongodb://localhost:27017/smtp_bd", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://localhost:27017/smtp_bd");
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -47,6 +46,8 @@ app.post("/api/products", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+app.use("/api/users", require("./routes/userRoutes"));
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
