@@ -1,8 +1,3 @@
-/* LoginPage.css */
-
-/* Global styles */
-
-/* Container for the login form */
 .login-container {
   background-color: #ffffff;
   padding: 40px;
@@ -11,14 +6,18 @@
   max-width: 400px;
   width: 100%;
   text-align: center;
-  animation: fadeIn 1s ease-in-out;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Title styling */
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #333;
-  font-size: 24px;
+  font-size: 28px;
 }
 
 /* Form group for labels and inputs */
@@ -95,6 +94,18 @@ h2 {
 
 .register-button:hover {
   border: 2px solid #667eea;
+}
+
+.backLobby {
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.backLobby:hover {
+  text-decoration: underline;
 }
 
 /* Fade-in animation for the container */

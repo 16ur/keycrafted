@@ -9,15 +9,16 @@
   max-width: 400px;
   width: 100%;
   text-align: center;
-  animation: fadeIn 1s ease-in-out;
-  margin: 0 auto; /* Center align the form */
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
-/* Title styling */
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #333;
-  font-size: 24px;
+  font-size: 28px;
 }
 
 /* Form group for labels and inputs */
@@ -86,6 +87,34 @@ h2 {
   color: white;
 }
 
+.login-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #fff;
+  color: #667eea;
+  border: 1.8px solid #e0e3ee;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    border-color 0.3s ease-in-out;
+}
+
+.login-button:hover {
+  border: 2px solid #667eea;
+}
+
+.backLobby {
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.backLobby:hover {
+  text-decoration: underline;
+}
 /* Fade-in animation for the container */
 @keyframes fadeIn {
   from {

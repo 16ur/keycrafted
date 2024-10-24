@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./RegisterPage.css"; // Assurez-vous d'importer le fichier CSS
 
 const RegisterPage = () => {
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +39,9 @@ const RegisterPage = () => {
   return (
     <div className="register-container">
       <h2>Inscription</h2>
+      <button className="backLobby" onClick={() => navigate("/")}>
+        Retour à l'accueil
+      </button>
       {error && <div className="error-message">{error}</div>}
       {message && <div className="success-message">{message}</div>}
       <form onSubmit={handleSubmit}>
@@ -74,6 +79,12 @@ const RegisterPage = () => {
           S'inscrire
         </button>
       </form>
+      <button
+        className="login-button"
+        onClick={() => navigate("/auth/user/login")}
+      >
+        Retour à la page de connexion
+      </button>
     </div>
   );
 };

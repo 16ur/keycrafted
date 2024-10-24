@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
+import Navbar from "../Navbar/Navbar";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Initialiser useNavigate
   const navigate = useNavigate();
@@ -28,13 +30,15 @@ const LoginPage = () => {
       // Si connexion réussie
       if (response.status === 200) {
         const { accessToken } = response.data;
-
         // Sauvegarde du token dans le localStorage
         localStorage.setItem("token", accessToken);
+        setIsLoggedIn(true);
 
         // Mettre à jour le message de succès ou rediriger l'utilisateur
         setMessage("Connexion réussie !");
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setError("");
+        navigate("/");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Erreur de connexion");
@@ -50,6 +54,10 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <h2>Connexion</h2>
+      <button className="backLobby" onClick={() => navigate("/")}>
+        Retour à l'accueil
+      </button>
+
       {error && <div className="error-message">{error}</div>}
       {message && <div className="success-message">{message}</div>}
       <form onSubmit={handleSubmit}>

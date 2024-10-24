@@ -6,7 +6,7 @@ import "./App.css";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import LoginPage from "./Components/LoginPage/LoginPage.jsx";
 import RegisterPage from "./Components/RegisterPage/RegisterPage.jsx";
-import AuthPage from "./Components/AuthPage/AuthPage.jsx";
+import CorePage from "./Components/CorePage/CorePage.jsx";
 import axios from "axios";
 
 function App() {
@@ -43,9 +43,8 @@ function App() {
 
       <Router>
         <div>
-          <Navbar />
           <Routes>
-            <Route path="/auth/user" element={<AuthPage />} />
+            <Route path="/" element={<CorePage />} />
             <Route path="/auth/user/register" element={<RegisterPage />} />
             <Route path="/auth/user/login" element={<LoginPage />} />
           </Routes>

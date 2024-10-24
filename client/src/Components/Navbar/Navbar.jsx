@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaShoppingCart } from "react-icons/fa"; // Import des icônes
 import { useNavigate } from "react-router-dom"; // Pour la navigation
+
 import "./Navbar.css";
 
 function Navbar() {
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  // Fonction pour naviguer vers la page de connexion/inscription
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   const handleUserIconClick = () => {
-    navigate("/auth/user"); // Redirige vers la page de connexion/inscription
+    if (isLoggedIn) {
+      alert("User is logged in");
+    } else {
+      navigate("/auth/user/login");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    alert("Vous avez été déconnecté");
   };
 
   return (
@@ -28,6 +49,12 @@ function Navbar() {
           <FaUserCircle className="icon" onClick={handleUserIconClick} />
           <FaShoppingCart className="icon" />
         </div>
+
+        {isLoggedIn && (
+          <button className="logout-button" onClick={handleLogout}>
+            Déconnexion
+          </button>
+        )}
       </nav>
       <br />
       <hr className="bottomNavbar" />
