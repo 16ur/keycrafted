@@ -1,8 +1,16 @@
 import React from "react";
 import { FaUserCircle, FaShoppingCart } from "react-icons/fa"; // Import des icônes
+import { useNavigate } from "react-router-dom"; // Pour la navigation
 import "./Navbar.css";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  // Fonction pour naviguer vers la page de connexion/inscription
+  const handleUserIconClick = () => {
+    navigate("/auth/user"); // Redirige vers la page de connexion/inscription
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -17,7 +25,7 @@ function Navbar() {
 
         {/* Icônes utilisateur et panier à la suite de la barre de recherche */}
         <div className="navbar-icons">
-          <FaUserCircle className="icon" />
+          <FaUserCircle className="icon" onClick={handleUserIconClick} />
           <FaShoppingCart className="icon" />
         </div>
       </nav>
