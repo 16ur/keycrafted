@@ -20,7 +20,7 @@ function Navbar() {
 
   const handleUserIconClick = () => {
     if (isLoggedIn) {
-      alert("User is logged in");
+      navigate("/user/account");
     } else {
       navigate("/auth/user/login");
     }
