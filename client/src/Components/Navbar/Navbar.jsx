@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { FaUserCircle, FaShoppingCart } from "react-icons/fa"; // Import des icônes
+import { FaShoppingCart } from "react-icons/fa"; // Import des icônes
 import { useNavigate } from "react-router-dom"; // Pour la navigation
-
+import UserAvatar from "../../assets/userAvatar.svg?react";
+import CartUser from "../../assets/cart.svg?react";
 import "./Navbar.css";
 
 function Navbar() {
-  const [message, setMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(!!token);
   }, []);
 
   const handleUserIconClick = () => {
@@ -35,34 +31,39 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className="navbar-logo">
-          <a href="/">KeyCrafted</a>
+        <div className="navbar-left">
+          <button>Qui sommes-nous ?</button>
         </div>
 
-        {/* Barre de recherche */}
-        <div className="navbar-search">
-          <input type="text" placeholder="Search for products..." />
+        <div className="navbar-center">
+          <a href="/" className="navbar-logo">
+            KeyCrafted
+          </a>
         </div>
 
-        {/* Icônes utilisateur et panier à la suite de la barre de recherche */}
-        <div className="navbar-icons">
-          <FaUserCircle className="icon" onClick={handleUserIconClick} />
-          <FaShoppingCart className="icon" />
-        </div>
-
-        {isLoggedIn && (
-          <button className="logout-button" onClick={handleLogout}>
-            Déconnexion
+        <div className="navbar-right">
+          <button>Français</button>
+          <button>EUR €</button>
+          <button>
+            <UserAvatar
+              className="icon"
+              onClick={handleUserIconClick}
+              width="24px"
+              height="24px"
+            />
           </button>
-        )}
+          <button>
+            <CartUser className="icon" width="24px" height="24px" />
+          </button>
+        </div>
       </nav>
-      <br />
-      <hr className="bottomNavbar" />
+
       <div className="navbar-buttons">
-        <button>Keyboards</button>
-        <button>Accessories</button>
-        <button>Custom</button>
-        <button>About</button>
+        <button>Claviers</button>
+        <button>Keycaps</button>
+        <button>Switchs</button>
+        <button>Accessoires</button>
+        <button>Ventes flash</button>
       </div>
     </>
   );
