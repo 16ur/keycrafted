@@ -22,10 +22,8 @@ function Navbar() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    alert("Vous avez été déconnecté");
+  const handleCategoryClick = (category) => {
+    navigate(`/products/${category}`);
   };
 
   return (
@@ -59,8 +57,10 @@ function Navbar() {
       </nav>
 
       <div className="navbar-buttons">
-        <button>Claviers</button>
-        <button>Keycaps</button>
+        <button onClick={() => handleCategoryClick("keyboards")}>
+          Claviers
+        </button>
+        <button onClick={() => handleCategoryClick("keycaps")}>Keycaps</button>
         <button>Switchs</button>
         <button>Accessoires</button>
         <button>Ventes flash</button>

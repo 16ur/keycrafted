@@ -6,6 +6,7 @@ import LoginPage from "./Components/LoginPage/LoginPage.jsx";
 import RegisterPage from "./Components/RegisterPage/RegisterPage.jsx";
 import CorePage from "./Components/CorePage/CorePage.jsx";
 import UserAccount from "./Components/UserAccount/UserAccount.jsx";
+import ProductsPage from "./Components/ProductsPage/ProductsPage.jsx";
 import axios from "axios";
 
 function App() {
@@ -46,8 +47,8 @@ function App() {
             <Route path="/" element={<CorePage />} />
             <Route path="/auth/user/register" element={<RegisterPage />} />
             <Route path="/auth/user/login" element={<LoginPage />} />
-
             <Route path="/user/account" element={<UserAccount />} />
+            <Route path="/products/:category" element={<ProductsPage />} />
           </Routes>
         </div>
       </Router>
