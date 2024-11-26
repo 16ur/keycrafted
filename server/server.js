@@ -47,6 +47,19 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
+app.get("/api/products/category/:category", async (req, res) => {
+  const { category } = req.params;
+  try {
+    const products = await Product.find({ category });
+    if (products.length === 0) {
+      return res.status(404).json({ message: "Aucun produit trouvé." });
+    }
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.use("/api/users", require("./routes/userRoutes"));
 
 app.listen(8080, () => {
