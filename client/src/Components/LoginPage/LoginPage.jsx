@@ -34,7 +34,6 @@ const LoginPage = () => {
         localStorage.setItem("token", accessToken);
         setIsLoggedIn(true);
 
-        // Mettre à jour le message de succès ou rediriger l'utilisateur
         setMessage("Connexion réussie !");
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setError("");
