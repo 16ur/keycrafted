@@ -7,6 +7,7 @@ import RegisterPage from "./Components/RegisterPage/RegisterPage.jsx";
 import CorePage from "./Components/CorePage/CorePage.jsx";
 import UserAccount from "./Components/UserAccount/UserAccount.jsx";
 import ProductsPage from "./Components/ProductsPage/ProductsPage.jsx";
+import ProductDetails from "./Components/ProductDetails/ProductDetails.jsx";
 import axios from "axios";
 
 function App() {
@@ -30,17 +31,6 @@ function App() {
 
   return (
     <>
-      {/* Exemple pour afficher les produits récupérés */}
-      {/* {array.map((product) => (
-        <div key={product.id}>
-          <h2>{product.name}</h2>
-          <p>Price: ${product.price}</p>
-          <p>Stock: {product.stock}</p>
-          <p>Category: {product.category}</p>
-          <p>{product.description}</p>
-        </div>
-      ))} */}
-
       <Router>
         <div>
           <Routes>
@@ -49,6 +39,10 @@ function App() {
             <Route path="/auth/user/login" element={<LoginPage />} />
             <Route path="/user/account" element={<UserAccount />} />
             <Route path="/products/:category" element={<ProductsPage />} />
+            <Route
+              path="/products/:category/:id"
+              element={<ProductDetails />}
+            />
           </Routes>
         </div>
       </Router>
