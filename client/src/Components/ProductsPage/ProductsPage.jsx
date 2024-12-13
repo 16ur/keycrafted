@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductsPage.css";
+import "../Filter/Filter.css";
 import Navbar from "../Navbar/Navbar";
 import Filter from "../Filter/Filter";
 
@@ -27,16 +28,17 @@ const ProductsPage = () => {
   }, [category]);
 
   const handleImageClick = (id) => {
-    navigate(`/products/${category}/${id}`); // Navigue vers la page des détails du produit
+    navigate(`/products/${category}/${id}`); 
   };
 
   return (
     <div>
       <Navbar />
       {error && <p>{error}</p>}
-      <div className="page-container">
-        <Filter />
+          <Filter />
+          <p className="filter-container">{products.length > 1 ? products.length + " " +"résultats" :  products.length + " " + "résultat" } </p>
 
+      <div className="page-container">
         <div className="products-grid">
           {products.map((product) => (
             <div key={product._id} className="product-card">

@@ -30,7 +30,7 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-left">
-          <button>Qui sommes-nous ?</button>
+          <button style={{ fontSize: "0.9rem" }}>Qui sommes-nous ?</button>
         </div>
 
         <div className="navbar-center">
@@ -50,7 +50,7 @@ function Navbar() {
               height="24px"
             />
           </button>
-          <button>
+          <button onClick={() => navigate("/cart")}>
             <CartUser className="icon" width="24px" height="24px" />
           </button>
         </div>
