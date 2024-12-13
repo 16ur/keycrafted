@@ -1,45 +1,88 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
-const CartContext = createContext();
-
-export const useCart = () => {
-  return useContext(CartContext);
-};
+export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({ items: [] });
+  const [loading, setLoading] = useState(true);
 
-  const addToCart = (product) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item._id === product._id);
-
-      if (existingProduct) {
-        // Augmenter la quantité si le produit est déjà dans le panier
-        return prevCart.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        // Ajouter un nouveau produit au panier
-        return [...prevCart, { ...product, quantity: 1 }];
-      }
-    });
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/cart", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setCart(response.data);
+    } catch (error) {
+      console.error("Erreur lors de la récupération du panier :", error);
+      setCart({ items: [] });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item._id !== productId));
+  useEffect(() => {
+    fetchCart();
+  }, []);
+
+  const addToCart = async (product) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/cart/add",
+        { productId: product._id, quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCart(response.data);
+    } catch (error) {
+      console.error("Erreur lors de l'ajout au panier :", error);
+    }
   };
 
-  const clearCart = () => {
-    setCart([]);
+  const removeFromCart = async (itemId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8080/api/cart/remove/${itemId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCart(response.data);
+    } catch (error) {
+      console.error("Erreur lors de la suppression du panier :", error);
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:8080/api/cart/clear",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setCart(response.data); // état du panier
+    } catch (error) {
+      console.error("Erreur lors du vidage du panier :", error);
+    }
   };
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, clearCart }}
+      value={{ cart, addToCart, removeFromCart, clearCart, loading }}
     >
       {children}
     </CartContext.Provider>
   );
 };
+
+export const useCart = () => useContext(CartContext);

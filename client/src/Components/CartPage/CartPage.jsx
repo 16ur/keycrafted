@@ -4,28 +4,40 @@ import Navbar from "../Navbar/Navbar";
 import "./CartPage.css";
 
 const CartPage = () => {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const { cart, removeFromCart, clearCart, loading } = useCart();
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="cart-page">
+          <h1>Mon Panier</h1>
+          <p>Chargement...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Navbar />
       <div className="cart-page">
         <h1>Mon Panier</h1>
-        {cart.length === 0 ? (
+        {cart.items.length === 0 ? (
           <p>Votre panier est vide.</p>
         ) : (
           <>
             <ul>
-              {cart.map((item) => (
+              {cart.items.map((item) => (
                 <li key={item._id} className="cart-item">
                   <img
-                    src={`http://localhost:8080${item.imageUrl}`}
-                    alt={item.name}
+                    src={`http://localhost:8080${item.productId.imageUrl}`}
+                    alt={item.productId.name}
                     className="cart-item-image"
                   />
                   <div>
-                    <h3>{item.name}</h3>
-                    <p>Prix : €{item.price}</p>
+                    <h3>{item.productId.name}</h3>
+                    <p>Prix : €{item.productId.price}</p>
                     <p>Quantité : {item.quantity}</p>
                   </div>
                   <button onClick={() => removeFromCart(item._id)}>

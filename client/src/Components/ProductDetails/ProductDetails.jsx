@@ -11,6 +11,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
   const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -67,7 +68,7 @@ const ProductDetails = () => {
 
           <button
             className="add-to-cart-button"
-            onClick={() => addToCart(product)}
+            onClick={() => addToCart(product, 1)}
           >
             Ajouter au panier
           </button>

@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
+const userRoutes = require("./routes/userRoutes");
+const cartRoutes = require("./routes/cartRoutes"); // Importer les routes du panier
+
 const cors = require("cors");
 require("dotenv").config();
 
@@ -73,7 +76,8 @@ app.get("/api/products/:category/:id", async (req, res) => {
   }
 });
 
-app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/users", userRoutes);
+app.use("/api/cart", cartRoutes); // Monter les routes du panier
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
