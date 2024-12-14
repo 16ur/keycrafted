@@ -33,6 +33,29 @@ router.post("/add", validateTokenHandler, async (req, res) => {
   }
 });
 
+router.delete("/clear", validateTokenHandler, async (req, res) => {
+  const userId = req.user.id;
+
+  try {
+    const cart = await Cart.findOneAndDelete({ userId });
+
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ message: "Panier introuvable pour cet utilisateur." });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Votre panier a été supprimé avec succès." });
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur lors de la suppression du panier.",
+      error: error.message,
+    });
+  }
+});
+
 router.get("/", validateTokenHandler, async (req, res) => {
   const userId = req.user.id;
   try {

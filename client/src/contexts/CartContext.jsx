@@ -16,8 +16,11 @@ export const CartProvider = ({ children }) => {
       });
       setCart(response.data);
     } catch (error) {
-      console.error("Erreur lors de la récupération du panier :", error);
-      setCart({ items: [] });
+      if (error.response && error.response.status === 404) {
+        setCart({ items: [] });
+      } else {
+        console.error("Erreur lors de la récupération du panier :", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -71,9 +74,11 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      setCart(response.data);
+      setCart({ items: [] });
+      alert(response.data.message);
     } catch (error) {
-      console.error("Erreur lors du vidage du panier :", error);
+      console.error("Erreur lors de la suppression du panier :", error);
+      alert("Une erreur est survenue lors de la suppression de votre panier.");
     }
   };
 
