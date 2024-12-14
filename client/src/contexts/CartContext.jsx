@@ -6,6 +6,7 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
+  const [isAdded, setIsAdded] = useState(false);
 
   const fetchCart = async () => {
     try {
@@ -30,18 +31,21 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  const addToCart = async (product) => {
+  const addToCart = async (product, quantity) => {
     try {
       const response = await axios.post(
         "http://localhost:8080/api/cart/add",
-        { productId: product._id, quantity: 1 },
+        { productId: product._id, quantity },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
+
       setCart(response.data);
+      setIsAdded(true);
+      console.log("Produit ajouté au panier");
       fetchCart();
     } catch (error) {
       console.error("Erreur lors de l'ajout au panier :", error);

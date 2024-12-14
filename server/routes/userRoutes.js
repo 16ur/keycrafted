@@ -15,11 +15,13 @@ router.post("/login", loginUser);
 router.get("/current", validateTokenHandler, currentUser);
 
 router.post("/products", async (req, res) => {
-  const { name, price, category, stock, description, imageUrl } = req.body;
+  const { name, price, brand, category, stock, description, imageUrl } =
+    req.body;
   try {
     const product = new Product({
       name,
       price,
+      brand,
       category,
       stock,
       description,

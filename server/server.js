@@ -32,11 +32,13 @@ app.get("/api/products", async (req, res) => {
 });
 
 app.post("/api/products", async (req, res) => {
-  const { name, price, category, stock, description, imageUrl } = req.body;
+  const { name, price, brand, category, stock, description, imageUrl } =
+    req.body;
 
   const newProduct = new Product({
     name,
     price,
+    brand,
     category,
     stock,
     description,

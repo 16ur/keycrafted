@@ -3,15 +3,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import "./ProductDetails.css";
-
 import { useCart } from "../../contexts/CartContext";
 
 const ProductDetails = () => {
-  const { category, id } = useParams(); // Récupérer la catégorie et l'ID du produit depuis l'URL
+  const { category, id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -39,39 +38,82 @@ const ProductDetails = () => {
   return (
     <div>
       <Navbar />
-      <div className="product-details-page">
-        <div className="product-image-container">
+      <div className="product-details-container">
+        <div className="product-thumbnails-container">
           <img
             src={`http://localhost:8080${product.imageUrl}`}
             alt={product.name}
-            className="product-image-details"
+            className="product-thumbnail"
           />
-          <p className="badge">Nouveau</p>
+          <img
+            src={`http://localhost:8080${product.imageUrl}`}
+            alt={product.name}
+            className="product-thumbnail"
+          />
+          <img
+            src={`http://localhost:8080${product.imageUrl}`}
+            alt={product.name}
+            className="product-thumbnail"
+          />
         </div>
-        <div className="product-info">
-          <h1>{product.name}</h1>
-          <p className="product-price">€{product.price}</p>
-          <p className="product-description">{product.description}</p>
 
-          <div className="product-thumbnails">
-            <img
-              src={`http://localhost:8080${product.imageUrl}`}
-              alt="Thumbnail"
-              className="product-thumbnail"
-            />
-            <img
-              src={`http://localhost:8080${product.imageUrl}`}
-              alt="Thumbnail"
-              className="product-thumbnail"
-            />
+        <div className="product-main-container">
+          <img
+            src={`http://localhost:8080${product.imageUrl}`}
+            alt={product.name}
+            className="product-main-image"
+          />
+
+          <div className="product-info">
+            <p className="product-brand">{product.brand}</p>
+            <h1 className="product-title">{product.name}</h1>
+            <p className="product-price">€{product.price}</p>
+            <p className="product-tax">Taxes incluses.</p>
+
+            {product.options && (
+              <div className="product-options">
+                <h3>Switch :</h3>
+                <div className="options-container">
+                  {product.options.map((option, index) => (
+                    <button
+                      key={index}
+                      className={`option-button ${
+                        selectedOption === option ? "selected" : ""
+                      }`}
+                      onClick={() => setSelectedOption(option)}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="quantityAndCartAdd">
+              <div className="quantity-selector">
+                <button
+                  onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+                  className="quantity-button"
+                >
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="quantity-button"
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                onClick={() => addToCart(product, quantity)}
+                className="add-to-cart-button"
+              >
+                Ajouter au panier
+              </button>
+            </div>
           </div>
-
-          <button
-            onClick={() => addToCart(product)}
-            className="add-to-cart-button"
-          >
-            Ajouter au panier
-          </button>
         </div>
       </div>
     </div>
