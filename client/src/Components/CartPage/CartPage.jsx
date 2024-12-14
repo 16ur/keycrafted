@@ -18,39 +18,64 @@ const CartPage = () => {
     );
   }
 
+  const totalPrice = cart.items.reduce(
+    (acc, item) => acc + item.productId.price * item.quantity,
+    0
+  );
+
   return (
     <div>
       <Navbar />
-      <div className="cart-page">
-        <h1>Mon Panier</h1>
-        {cart.items.length === 0 ? (
-          <p>Votre panier est vide.</p>
-        ) : (
-          <>
-            <ul>
+      <div className="cart-container">
+        <div className="cart-products">
+          <h2>Votre panier 🛒</h2>
+          {cart.items.length === 0 ? (
+            <p>Votre panier est vide.</p>
+          ) : (
+            <>
               {cart.items.map((item) => (
-                <li key={item._id} className="cart-item">
+                <div key={item._id} className="cart-product">
                   <img
                     src={`http://localhost:8080${item.productId.imageUrl}`}
                     alt={item.productId.name}
-                    className="cart-item-image"
+                    className="product-image-cart"
                   />
-                  <div>
+                  <div className="product-details">
                     <h3>{item.productId.name}</h3>
-                    <p>Prix : €{item.productId.price}</p>
-                    <p>Quantité : {item.quantity}</p>
+                    <p>€{item.productId.price}</p>
+                    <div className="quantity-controls">
+                      <button>-</button>
+                      <span>{item.quantity}</span>
+                      <button>+</button>
+                    </div>
+                    <button
+                      className="remove-product"
+                      onClick={() => removeFromCart(item._id)}
+                    >
+                      Supprimer
+                    </button>
                   </div>
-                  <button onClick={() => removeFromCart(item._id)}>
-                    Supprimer
-                  </button>
-                </li>
+                  <p className="product-total">
+                    €{(item.productId.price * item.quantity).toFixed(2)}
+                  </p>
+                </div>
               ))}
-            </ul>
-            <button className="clear-cart-button" onClick={clearCart}>
-              Vider le panier
-            </button>
-          </>
-        )}
+            </>
+          )}
+        </div>
+
+        <div className="cart-summary">
+          <h2>Total panier</h2>
+          <div className="summary-details">
+            <p>
+              Total: <span>€{totalPrice.toFixed(2)}</span>
+            </p>
+          </div>
+          <button className="clear-cart" onClick={clearCart}>
+            Vider le panier
+          </button>
+          <button className="checkout">Commander</button>
+        </div>
       </div>
     </div>
   );

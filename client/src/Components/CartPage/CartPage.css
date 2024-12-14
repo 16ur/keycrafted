@@ -1,30 +1,140 @@
-.cart-page {
-  padding: 2rem;
+.cart-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  font-family: Arial, sans-serif;
 }
 
-.cart-item {
+.cart-products {
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+}
+
+.cart-product {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-between;
   margin-bottom: 1rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
 }
 
-.cart-item-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 4px;
+.product-image-cart {
+  width: 100px;
+  height: 100px;
   object-fit: cover;
+  border-radius: 8px;
 }
 
-.clear-cart-button {
-  padding: 0.8rem 1.5rem;
-  background-color: #ff0000;
-  color: white;
+.product-details {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.product-details h3 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.product-details p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quantity-controls button {
+  background: #ddd;
   border: none;
+  padding: 0.3rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.clear-cart-button:hover {
-  background-color: #cc0000;
+.quantity-controls button:hover {
+  background: #ccc;
+}
+
+.remove-product {
+  background: none;
+  border: 1px solid #ff4c4c;
+  color: #ff4c4c;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-product:hover {
+  background: #ff4c4c;
+  color: white;
+}
+
+.product-total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.summary-details p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.summary-details span {
+  font-weight: bold;
+}
+
+.clear-cart {
+  background: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+.clear-cart:hover {
+  background: #d63434;
+}
+
+.checkout {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+.checkout:hover {
+  background: #0056b3;
 }

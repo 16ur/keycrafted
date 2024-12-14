@@ -1,4 +1,3 @@
-/* Styles généraux pour la navbar */
 .navbar {
   display: flex;
   align-items: center;
@@ -10,7 +9,6 @@
   color: black;
 }
 
-/* Section gauche */
 .navbar-left {
   display: flex;
   flex-direction: column;
@@ -33,8 +31,6 @@
 .navbar-left button:hover {
   text-decoration: underline;
 }
-
-/* Section centrale (logo) */
 
 .navbar-center {
   display: flex;
@@ -83,7 +79,6 @@
   color: black;
   cursor: pointer;
   font-size: 0.9rem;
-
 }
 
 .navbar-buttons button:hover {

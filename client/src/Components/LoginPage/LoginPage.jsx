@@ -85,7 +85,6 @@ const LoginPage = () => {
         </button>
       </form>
 
-      {/* Bouton pour rediriger vers la page d'inscription */}
       <div className="register-link">
         <button className="register-button" onClick={handleRegisterClick}>
           S'inscrire

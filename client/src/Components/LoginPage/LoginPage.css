@@ -13,14 +13,12 @@
   transform: translate(-50%, -50%);
 }
 
-/* Title styling */
 h2 {
   margin-bottom: 10px;
   color: #333;
   font-size: 28px;
 }
 
-/* Form group for labels and inputs */
 .form-group {
   margin-bottom: 20px;
   text-align: left;
@@ -60,7 +58,6 @@ h2 {
   box-shadow: 0 4px 15px rgba(71, 102, 241, 0.4);
 }
 
-/* Error and success message styling */
 .error-message,
 .success-message {
   font-size: 14px;
@@ -108,7 +105,6 @@ h2 {
   text-decoration: underline;
 }
 
-/* Fade-in animation for the container */
 @keyframes fadeIn {
   from {
     opacity: 0;

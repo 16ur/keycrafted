@@ -39,6 +39,7 @@ export const CartProvider = ({ children }) => {
         }
       );
       setCart(response.data);
+      fetchCart();
     } catch (error) {
       console.error("Erreur lors de l'ajout au panier :", error);
     }
@@ -70,7 +71,7 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      setCart(response.data); // état du panier
+      setCart(response.data);
     } catch (error) {
       console.error("Erreur lors du vidage du panier :", error);
     }
