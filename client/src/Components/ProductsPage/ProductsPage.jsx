@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./ProductsPage.css";
+import "../Filter/Filter.css";
 import Navbar from "../Navbar/Navbar";
 import Filter from "../Filter/Filter";
 
@@ -9,6 +10,7 @@ const ProductsPage = () => {
   const { category } = useParams(); // Récupère la catégorie de l'URL
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -25,22 +27,35 @@ const ProductsPage = () => {
     fetchProducts();
   }, [category]);
 
+  const handleImageClick = (id) => {
+    navigate(`/products/${category}/${id}`); 
+  };
+
   return (
     <div>
       <Navbar />
       {error && <p>{error}</p>}
-      <div className="page-container">
-        {/* Filtre à gauche */}
-        <Filter />
+          <Filter />
+          <p className="filter-container">{products.length > 1 ? products.length + " " +"résultats" :  products.length + " " + "résultat" } </p>
 
+      <div className="page-container">
         <div className="products-grid">
           {products.map((product) => (
             <div key={product._id} className="product-card">
+              <button
+                className="imageButton"
+                onClick={() => handleImageClick(product._id)}
+              >
+                <img
+                  src={`http://localhost:8080${product.imageUrl}`}
+                  alt={"Ce produit n'a pas d'image"}
+                  className="product-image"
+                />
+              </button>
               <strong>
                 <p>{product.name}</p>
               </strong>
-              <p>{product.price} €</p>
-              <img src={product.imageUrl} alt={product.name} />
+              <p className="productPrice">€{product.price}</p>
             </div>
           ))}
         </div>

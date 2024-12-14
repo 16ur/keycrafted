@@ -1,4 +1,24 @@
 .filter-container {
+  border-radius: 3px;
+  width: 90%;
+  margin: 0 auto;  
+}
+
+.filter-button{
+  background-color: transparent;
+  border: 1.1px solid #333;
+  color: #333;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8em;
+  margin-bottom: 20px;
+
 }
