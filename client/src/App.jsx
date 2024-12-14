@@ -17,7 +17,6 @@ function App() {
   const [count, setCount] = useState(0);
   const [array, setArray] = useState([]);
 
-  // Fonction pour récupérer les produits de l'API
   const fetchAPI = async () => {
     try {
       const response = await axios.get("http://localhost:8080/api/products");
@@ -27,11 +26,9 @@ function App() {
     }
   };
 
-  // useEffect pour appeler fetchAPI seulement une fois lors du premier rendu
   useEffect(() => {
     fetchAPI();
-  }, []); // [] empêche l'appel répété à chaque rendu
-
+  }, []);
   return (
     <>
       <CartProvider>
