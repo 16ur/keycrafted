@@ -56,6 +56,37 @@ router.delete("/clear", validateTokenHandler, async (req, res) => {
   }
 });
 
+router.delete("/remove/:itemId", validateTokenHandler, async (req, res) => {
+  const userId = req.user.id;
+  const { itemId } = req.params;
+
+  try {
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ message: "Panier introuvable pour cet utilisateur." });
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item._id.toString() === itemId
+    );
+
+    if (itemIndex > -1) {
+      cart.items.splice(itemIndex, 1);
+    }
+
+    await cart.save();
+    res.status(200).json({ message: "Produit supprimé du panier", cart });
+  } catch (error) {
+    res.status(500).json({
+      message: "Erreur lors de la suppression du produit du panier.",
+      error: error.message,
+    });
+  }
+});
+
 router.get("/", validateTokenHandler, async (req, res) => {
   const userId = req.user.id;
   try {

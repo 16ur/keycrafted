@@ -62,9 +62,13 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
-      setCart(response.data);
+      fetchCart();
+      console.log("Produit supprimé du panier");
     } catch (error) {
-      console.error("Erreur lors de la suppression du panier :", error);
+      console.error(
+        "Erreur lors de la suppression du produit du panier :",
+        error
+      );
     }
   };
 
