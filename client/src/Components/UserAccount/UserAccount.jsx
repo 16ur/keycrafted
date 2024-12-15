@@ -6,12 +6,12 @@ import Navbar from "../Navbar/Navbar";
 const UserAccount = () => {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
+  const [purchaseHistory, setPurchaseHistory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      // Si pas de token, redirige l'utilisateur vers la page de connexion
       navigate("/auth/user/login");
       return;
     }
@@ -36,7 +36,7 @@ const UserAccount = () => {
         const data = await response.json();
         setUser(data);
       } catch (error) {
-        setError("Erreur lors de la récupération de l'utilisateur");
+        setError(error.message);
       }
     };
 
@@ -54,13 +54,21 @@ const UserAccount = () => {
   return (
     <div>
       <Navbar />
-      <div className="user-account">
-        <h1>Mon compte</h1>
-        {error && <p className="error">{error}</p>}
-        <p>Nom d'utilisateur: {user.username}</p>
-        <p>Email: {user.email}</p>
-        <p>Historique d'achats</p>
-        <button onClick={handleLogout}>Se déconnecter</button>
+      <div className="user-account-container">
+        <div className="user-info-card">
+          <h1>Bienvenue, {user.username || "Utilisateur"} !</h1>
+          <div className="user-details">
+            <p>
+              <strong>Nom d'utilisateur :</strong> {user.username}
+            </p>
+            <p>
+              <strong>Email :</strong> {user.email}
+            </p>
+          </div>
+          <button className="logout-button" onClick={handleLogout}>
+            Se déconnecter
+          </button>
+        </div>
       </div>
     </div>
   );
