@@ -50,7 +50,7 @@ function App() {
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </div>
-          <Footer /> {/* Footer toujours en bas */}
+          <Footer />
         </Router>
       </CartProvider>
     </div>
