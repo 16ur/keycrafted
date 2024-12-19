@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 //@route POST /api/users/register
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
   if (!username || !email || !password) {
     res.status(400);
     throw new Error("Veuillez remplir tous les champs");
@@ -17,13 +17,16 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Email déjà utilisé");
   }
 
-  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log(hashedPassword);
+
+  const userRole = role || "user";
+
   const user = new User({
     username,
     email,
     password: hashedPassword,
+    role: userRole,
   });
 
   await user.save();
@@ -34,6 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       username: user.username,
       email: user.email,
+      role: user.role,
     });
   } else {
     res.status(400);
@@ -58,6 +62,7 @@ const loginUser = asyncHandler(async (req, res) => {
           username: user.username,
           email: user.email,
           id: user.id,
+          role: user.role,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
@@ -78,7 +83,17 @@ const loginUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/current
 //@access private
 const currentUser = asyncHandler(async (req, res) => {
-  res.json(req.user);
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    res.status(404);
+    throw new Error("Utilisateur introuvable");
+  }
+  res.status(200).json({
+    id: user._id,
+    username: user.username,
+    email: user.email,
+    role: user.role,
+  });
 });
 
 module.exports = { registerUser, loginUser, currentUser };

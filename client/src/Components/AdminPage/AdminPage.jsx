@@ -18,6 +18,44 @@ const AdminPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/auth/user/login");
+          return;
+        }
+
+        const response = await axios.get(
+          "http://localhost:8080/api/users/current",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("User data:", response.data);
+
+        if (response.data.role !== "admin") {
+          console.error("Vous n'êtes pas autorisé à accéder à cette page.");
+          navigate("/");
+        } else {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la vérification de l'utilisateur :",
+          error
+        );
+        navigate("/");
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
