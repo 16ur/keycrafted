@@ -22,8 +22,16 @@ db.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const Product = require("./models/Product");

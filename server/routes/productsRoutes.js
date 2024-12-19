@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
+const { getRecentProducts } = require("../controllers/productController");
 
 router.get("/categories", async (req, res) => {
   try {
@@ -11,5 +12,7 @@ router.get("/categories", async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
+
+router.get("/recent", getRecentProducts);
 
 module.exports = router;

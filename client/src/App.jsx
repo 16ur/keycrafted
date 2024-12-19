@@ -11,11 +11,11 @@ import ProductsPage from "./Components/ProductsPage/ProductsPage.jsx";
 import ProductDetails from "./Components/ProductDetails/ProductDetails.jsx";
 import CartPage from "./Components/CartPage/CartPage.jsx";
 import AdminPage from "./Components/AdminPage/AdminPage.jsx";
+import Footer from "./Components/Footer/Footer.jsx";
 
 import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [array, setArray] = useState([]);
 
   const fetchAPI = async () => {
@@ -30,11 +30,12 @@ function App() {
   useEffect(() => {
     fetchAPI();
   }, []);
+
   return (
-    <>
+    <div id="app-container">
       <CartProvider>
         <Router>
-          <div>
+          <div className="main-content">
             <Routes>
               <Route path="/" element={<CorePage />} />
               <Route path="/auth/user/register" element={<RegisterPage />} />
@@ -49,10 +50,10 @@ function App() {
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </div>
+          <Footer /> {/* Footer toujours en bas */}
         </Router>
       </CartProvider>
-    </>
+    </div>
   );
 }
-
 export default App;
