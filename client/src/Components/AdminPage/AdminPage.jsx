@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./AdminPage.css";
 
 const AdminPage = () => {
@@ -13,7 +15,6 @@ const AdminPage = () => {
   const [stock, setStock] = useState("");
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -35,19 +36,14 @@ const AdminPage = () => {
           }
         );
 
-        console.log("User data:", response.data);
-
         if (response.data.role !== "admin") {
-          console.error("Vous n'êtes pas autorisé à accéder à cette page.");
+          toast.error("Vous n'êtes pas autorisé à accéder à cette page.");
           navigate("/");
         } else {
           setIsAdmin(true);
         }
       } catch (error) {
-        console.error(
-          "Erreur lors de la vérification de l'utilisateur :",
-          error
-        );
+        toast.error("Erreur lors de la vérification de l'utilisateur.");
         navigate("/");
       }
     };
@@ -63,7 +59,7 @@ const AdminPage = () => {
         );
         setCategories(response.data);
       } catch (error) {
-        console.error("Erreur lors de la récupération des catégories :", error);
+        toast.error("Erreur lors de la récupération des catégories.");
       }
     };
 
@@ -72,7 +68,6 @@ const AdminPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
 
     try {
       await axios.post(
@@ -86,7 +81,7 @@ const AdminPage = () => {
         }
       );
 
-      setMessage("Produit ajouté avec succès !");
+      toast.success("Produit ajouté avec succès !");
       setName("");
       setPrice("");
       setBrand("");
@@ -95,13 +90,18 @@ const AdminPage = () => {
       setImageUrl("");
     } catch (error) {
       console.error("Erreur lors de l'ajout du produit :", error);
-      setMessage("Erreur lors de l'ajout du produit.");
+      toast.error("Erreur lors de l'ajout du produit.");
     }
   };
+
+  if (!isAdmin) {
+    return null;
+  }
 
   return (
     <div>
       <Navbar />
+      <ToastContainer />
       <div className="admin-container">
         <h1>Ajouter un Produit</h1>
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -175,7 +175,6 @@ const AdminPage = () => {
             Ajouter le produit
           </button>
         </form>
-        {message && <p className="message">{message}</p>}
       </div>
     </div>
   );
