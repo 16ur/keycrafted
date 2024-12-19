@@ -10,6 +10,7 @@ import UserAccount from "./Components/UserAccount/UserAccount.jsx";
 import ProductsPage from "./Components/ProductsPage/ProductsPage.jsx";
 import ProductDetails from "./Components/ProductDetails/ProductDetails.jsx";
 import CartPage from "./Components/CartPage/CartPage.jsx";
+import AdminPage from "./Components/AdminPage/AdminPage.jsx";
 
 import axios from "axios";
 
@@ -45,6 +46,7 @@ function App() {
                 element={<ProductDetails />}
               />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </div>
         </Router>

@@ -3,7 +3,9 @@ const mongoose = require("mongoose");
 const path = require("path");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
-const cartRoutes = require("./routes/cartRoutes"); // Importer les routes du panier
+const cartRoutes = require("./routes/cartRoutes");
+const productRoutes = require("./routes/productsRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const cors = require("cors");
 require("dotenv").config();
@@ -22,7 +24,7 @@ db.once("open", () => {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Pour servir les fichiers statiques dans le dossier "uploads"
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const Product = require("./models/Product");
 
@@ -79,7 +81,9 @@ app.get("/api/products/:category/:id", async (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
-app.use("/api/cart", cartRoutes); // Monter les routes du panier
+app.use("/api/cart", cartRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");

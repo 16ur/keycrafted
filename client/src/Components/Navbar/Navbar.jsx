@@ -11,6 +11,7 @@ function Navbar() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("Token", token);
     setIsLoggedIn(!!token);
   }, []);
 

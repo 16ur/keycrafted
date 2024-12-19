@@ -8,8 +8,10 @@ const productSchema = new mongoose.Schema({
   stock: { type: Number, default: 0 },
   description: { type: String },
   imageUrl: { type: String },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Product = mongoose.model("Product", productSchema);
 
 module.exports = Product;
+  
