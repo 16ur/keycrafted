@@ -122,7 +122,7 @@
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
   color: white;
-  background-color: #007bff;
+  background-color: #2c666e;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -130,7 +130,7 @@
 }
 
 .add-to-cart-button:hover {
-  background-color: #0056b3;
+  background-color: #07393c;
 }
 
 .quantityAndCartAdd {
