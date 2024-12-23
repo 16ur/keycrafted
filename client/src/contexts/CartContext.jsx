@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CartContext = createContext();
 
@@ -45,8 +47,8 @@ export const CartProvider = ({ children }) => {
 
       setCart(response.data);
       setIsAdded(true);
-      console.log("Produit ajouté au panier");
       fetchCart();
+      toast.success("Produit ajouté au panier");
     } catch (error) {
       console.error("Erreur lors de l'ajout au panier :", error);
     }
@@ -63,7 +65,7 @@ export const CartProvider = ({ children }) => {
         }
       );
       fetchCart();
-      console.log("Produit supprimé du panier");
+      toast.success("Produit supprimé du panier");
     } catch (error) {
       console.error(
         "Erreur lors de la suppression du produit du panier :",
@@ -82,20 +84,47 @@ export const CartProvider = ({ children }) => {
           },
         }
       );
+
       setCart({ items: [] });
-      alert(response.data.message);
+      toast.success("Panier vidé !");
     } catch (error) {
       console.error("Erreur lors de la suppression du panier :", error);
       alert("Une erreur est survenue lors de la suppression de votre panier.");
     }
   };
 
+  const updateQuantity = async (itemId, quantity) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `http://localhost:8080/api/cart/update-quantity`,
+        { itemId, quantity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setCart(response.data);
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour de la quantité :", err);
+    }
+  };
+
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, clearCart, loading }}
-    >
-      {children}
-    </CartContext.Provider>
+    <>
+      <ToastContainer />
+      <CartContext.Provider
+        value={{
+          cart,
+          addToCart,
+          removeFromCart,
+          updateQuantity,
+          clearCart,
+          loading,
+        }}
+      >
+        {children}
+      </CartContext.Provider>
+    </>
   );
 };
 
