@@ -1,0 +1,43 @@
+.orders-container {
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+h2-orders {
+  color: #007bff;
+  margin-bottom: 1.5rem;
+}
+
+.order-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-card h3 {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.order-card p {
+  margin: 0.3rem 0;
+  color: #555;
+}
+
+.order-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.order-card li {
+  margin: 0.5rem 0;
+}
+
+.order-card strong {
+  color: #000;
+}

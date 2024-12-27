@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UserAccount.css";
 import Navbar from "../Navbar/Navbar";
+import UserOrders from "../UserOrders/UserOrders";
 
 const UserAccount = () => {
   const [user, setUser] = useState({});
@@ -69,6 +70,7 @@ const UserAccount = () => {
             Se déconnecter
           </button>
         </div>
+        <UserOrders />
       </div>
     </div>
   );
