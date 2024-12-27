@@ -13,7 +13,7 @@ import CartPage from "./Components/CartPage/CartPage.jsx";
 import AdminPage from "./Components/AdminPage/AdminPage.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
 import CheckoutPage from "./Components/CheckoutPage/CheckoutPage.jsx";
-
+import ConfirmationPage from "./Components/ConfirmationPage/ConfirmationPage.jsx";
 import axios from "axios";
 
 function App() {
@@ -50,6 +50,7 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/confirmation" element={<ConfirmationPage />} />
             </Routes>
           </div>
           <Footer />

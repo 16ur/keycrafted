@@ -34,4 +34,15 @@ router.post("/", validateTokenHandler, async (req, res) => {
   }
 });
 
+router.get("/user-orders", validateTokenHandler, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const orders = await Order.find({ userId }).populate("items.productId");
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commandes :", error);
+    res.status(500).json({ message: "Erreur interne du serveur." });
+  }
+});
+
 module.exports = router;

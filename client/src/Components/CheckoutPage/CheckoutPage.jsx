@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
@@ -55,7 +56,20 @@ const CheckoutPage = () => {
 
       console.log("Commande réussie :", response.data);
       toast.success("Commande réussie !");
-      navigate("/confirmation");
+      navigate("/confirmation", {
+        state: {
+          order: {
+            items: cart.items,
+            total: cart.items.reduce(
+              (acc, item) => acc + item.productId.price * item.quantity,
+              0
+            ),
+            fullName: formData.fullName,
+            address: formData.address,
+            phoneNumber: formData.phone,
+          },
+        },
+      });
     } catch (error) {
       console.error(
         "Erreur lors de la commande :",
