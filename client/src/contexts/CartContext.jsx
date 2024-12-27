@@ -103,9 +103,12 @@ export const CartProvider = ({ children }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setCart(response.data);
+
+      await fetchCart();
+      toast.success("Quantité mise à jour !");
     } catch (err) {
       console.error("Erreur lors de la mise à jour de la quantité :", err);
+      toast.error("Impossible de mettre à jour la quantité.");
     }
   };
 

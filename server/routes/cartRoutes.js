@@ -87,6 +87,44 @@ router.delete("/remove/:itemId", validateTokenHandler, async (req, res) => {
   }
 });
 
+router.patch("/update-quantity", validateTokenHandler, async (req, res) => {
+  const userId = req.user.id;
+  const { itemId, quantity } = req.body;
+
+  if (quantity < 1) {
+    return res
+      .status(400)
+      .json({ message: "La quantité doit être au moins 1" });
+  }
+
+  try {
+    const cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Panier introuvable" });
+    }
+
+    const itemIndex = cart.items.findIndex(
+      (item) => item._id.toString() === itemId
+    );
+
+    if (itemIndex === -1) {
+      return res
+        .status(404)
+        .json({ message: "Article non trouvé dans le panier" });
+    }
+
+    cart.items[itemIndex].quantity = quantity;
+    await cart.save();
+
+    res.status(200).json({ message: "Quantité mise à jour", cart });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la mise à jour", error: error.message });
+  }
+});
+
 router.get("/", validateTokenHandler, async (req, res) => {
   const userId = req.user.id;
   try {

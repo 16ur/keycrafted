@@ -4,7 +4,8 @@ import Navbar from "../Navbar/Navbar";
 import "./CartPage.css";
 
 const CartPage = () => {
-  const { cart, removeFromCart, clearCart, loading } = useCart();
+  const { cart, removeFromCart, clearCart, updateQuantity, loading } =
+    useCart();
 
   if (loading) {
     return (
@@ -44,10 +45,27 @@ const CartPage = () => {
                     <h3>{item.productId.name}</h3>
                     <p>€{item.productId.price}</p>
                     <div className="quantity-controls">
-                      <button>-</button>
+                      <button
+                        onClick={
+                          () =>
+                            item.quantity > 1
+                              ? updateQuantity(item._id, item.quantity - 1) // Diminue la quantité
+                              : removeFromCart(item._id) // Retire l'article du panier
+                        }
+                      >
+                        -
+                      </button>
+
                       <span>{item.quantity}</span>
-                      <button>+</button>
+                      <button
+                        onClick={() =>
+                          updateQuantity(item._id, item.quantity + 1)
+                        }
+                      >
+                        +
+                      </button>
                     </div>
+
                     <button
                       className="remove-product"
                       onClick={() => removeFromCart(item._id)}
