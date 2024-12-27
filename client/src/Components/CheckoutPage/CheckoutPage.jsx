@@ -54,7 +54,6 @@ const CheckoutPage = () => {
         }
       );
 
-      console.log("Commande réussie :", response.data);
       toast.success("Commande réussie !");
       navigate("/confirmation", {
         state: {
@@ -71,10 +70,6 @@ const CheckoutPage = () => {
         },
       });
     } catch (error) {
-      console.error(
-        "Erreur lors de la commande :",
-        error.response?.data || error.message
-      );
       toast.error("Une erreur est survenue lors de la commande.");
     }
   };
@@ -83,62 +78,94 @@ const CheckoutPage = () => {
     <div>
       <Navbar />
       <ToastContainer />
+      <div className="checkout-page">
+        <h1 className="checkout-title">Finaliser ma commande</h1>
+        <div className="checkout-content">
+          <div className="checkout-summary">
+            <h2>Résumé de votre panier</h2>
+            {cart.items.map((item) => (
+              <div key={item.productId._id} className="checkout-item">
+                <img
+                  src={`http://localhost:8080${item.productId.imageUrl}`}
+                  alt={item.productId.name}
+                  className="checkout-item-image"
+                />
+                <div className="checkout-item-details">
+                  <h3>{item.productId.name}</h3>
+                  <p>Quantité : {item.quantity}</p>
+                  <p>
+                    Prix : €{(item.productId.price * item.quantity).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <h3 className="checkout-total">
+              Total : €
+              {cart.items
+                .reduce(
+                  (acc, item) => acc + item.productId.price * item.quantity,
+                  0
+                )
+                .toFixed(2)}
+            </h3>
+          </div>
 
-      <div className="checkout-container">
-        <h2>Informations de Commande</h2>
-        <form onSubmit={handleSubmit} className="checkout-form">
-          <div className="form-group">
-            <label>Nom complet</label>
-            <input
-              type="text"
-              name="fullName"
-              value={formData.fullName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Adresse</label>
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Numéro de téléphone</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Notes supplémentaires</label>
-            <textarea
-              name="additionalNotes"
-              value={formData.additionalNotes}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
-          <button type="submit" className="checkout-button">
-            Valider la commande
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="checkout-form">
+            <h2>Informations de livraison</h2>
+            <div className="form-group">
+              <label>Nom complet</label>
+              <input
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Adresse</label>
+              <input
+                type="text"
+                name="address"
+                maxLength={50}
+                value={formData.address}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Numéro de téléphone</label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Notes supplémentaires</label>
+              <textarea
+                name="additionalNotes"
+                value={formData.additionalNotes}
+                onChange={handleInputChange}
+              ></textarea>
+            </div>
+            <button type="submit" className="checkout-button">
+              Valider ma commande
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
