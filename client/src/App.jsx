@@ -12,6 +12,7 @@ import ProductDetails from "./Components/ProductDetails/ProductDetails.jsx";
 import CartPage from "./Components/CartPage/CartPage.jsx";
 import AdminPage from "./Components/AdminPage/AdminPage.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
+import CheckoutPage from "./Components/CheckoutPage/CheckoutPage.jsx";
 
 import axios from "axios";
 
@@ -47,6 +48,7 @@ function App() {
                 element={<ProductDetails />}
               />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Routes>
           </div>

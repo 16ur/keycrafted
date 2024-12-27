@@ -1,11 +1,13 @@
 import React from "react";
 import { useCart } from "../../contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import "./CartPage.css";
 
 const CartPage = () => {
   const { cart, removeFromCart, clearCart, updateQuantity, loading } =
     useCart();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -46,17 +48,14 @@ const CartPage = () => {
                     <p>€{item.productId.price}</p>
                     <div className="quantity-controls">
                       <button
-                        className="quantity-btn"
                         onClick={() =>
                           item.quantity > 1
                             ? updateQuantity(item._id, item.quantity - 1)
                             : removeFromCart(item._id)
                         }
                       >
-                        {" "}
                         -
                       </button>
-
                       <span>{item.quantity}</span>
                       <button
                         onClick={() =>
@@ -66,7 +65,6 @@ const CartPage = () => {
                         +
                       </button>
                     </div>
-
                     <button
                       className="remove-product"
                       onClick={() => removeFromCart(item._id)}
@@ -93,7 +91,9 @@ const CartPage = () => {
           <button className="clear-cart" onClick={clearCart}>
             Vider le panier
           </button>
-          <button className="checkout">Commander</button>
+          <button className="checkout" onClick={() => navigate("/checkout")}>
+            Commander
+          </button>
         </div>
       </div>
     </div>
