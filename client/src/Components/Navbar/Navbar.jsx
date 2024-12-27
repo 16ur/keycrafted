@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FaShoppingCart } from "react-icons/fa"; // Import des icônes
-import { useNavigate } from "react-router-dom"; // Pour la navigation
+import { FaShoppingCart } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import UserAvatar from "../../assets/userAvatar.svg?react";
 import CartUser from "../../assets/cart.svg?react";
 import "./Navbar.css";

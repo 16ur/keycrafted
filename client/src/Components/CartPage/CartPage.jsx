@@ -46,13 +46,14 @@ const CartPage = () => {
                     <p>€{item.productId.price}</p>
                     <div className="quantity-controls">
                       <button
-                        onClick={
-                          () =>
-                            item.quantity > 1
-                              ? updateQuantity(item._id, item.quantity - 1) // Diminue la quantité
-                              : removeFromCart(item._id) // Retire l'article du panier
+                        className="quantity-btn"
+                        onClick={() =>
+                          item.quantity > 1
+                            ? updateQuantity(item._id, item.quantity - 1)
+                            : removeFromCart(item._id)
                         }
                       >
+                        {" "}
                         -
                       </button>
 

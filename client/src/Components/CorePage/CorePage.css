@@ -1,4 +1,3 @@
-/* Styles généraux */
 .core-page {
   font-family: Arial, sans-serif;
   color: #333;
@@ -38,7 +37,6 @@
   max-width: 500px;
 }
 
-/* Section des catégories */
 .categories {
   text-align: center;
   padding: 2rem;
@@ -56,7 +54,6 @@
   gap: 1.5rem;
 }
 
-/* Cartes de catégories */
 .category-card {
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -93,7 +90,6 @@
   transform: scale(1.05);
 }
 
-/* Section des produits récemment ajoutés */
 .featured {
   text-align: center;
   padding: 2rem;
@@ -142,7 +138,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive - Tailles moyennes */
 @media (max-width: 1024px) {
   .categories-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -161,7 +156,6 @@
   }
 }
 
-/* Responsive - Petites tailles */
 @media (max-width: 768px) {
   .categories-grid {
     grid-template-columns: 1fr;

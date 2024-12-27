@@ -7,7 +7,7 @@ import Navbar from "../Navbar/Navbar";
 import Filter from "../Filter/Filter";
 
 const ProductsPage = () => {
-  const { category } = useParams(); // Récupère la catégorie de l'URL
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -28,15 +28,19 @@ const ProductsPage = () => {
   }, [category]);
 
   const handleImageClick = (id) => {
-    navigate(`/products/${category}/${id}`); 
+    navigate(`/products/${category}/${id}`);
   };
 
   return (
     <div>
       <Navbar />
       {error && <p>{error}</p>}
-          <Filter />
-          <p className="filter-container">{products.length > 1 ? products.length + " " +"résultats" :  products.length + " " + "résultat" } </p>
+      <Filter />
+      <p className="filter-container">
+        {products.length > 1
+          ? products.length + " " + "résultats"
+          : products.length + " " + "résultat"}{" "}
+      </p>
 
       <div className="page-container">
         <div className="products-grid">
