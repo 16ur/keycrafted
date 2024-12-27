@@ -31,7 +31,7 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-left">
-          <button style={{ fontSize: "0.9rem" }}>Qui sommes-nous ?</button>
+          <button>Qui sommes-nous ?</button>
         </div>
 
         <div className="navbar-center">
