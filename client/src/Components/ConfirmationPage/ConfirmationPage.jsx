@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import Navbar from "../Navbar/Navbar";
+import InvoiceDocument from "./InvoiceDocument";
 import "./ConfirmationPage.css";
 
 const ConfirmationPage = () => {
@@ -20,7 +22,7 @@ const ConfirmationPage = () => {
     return null;
   }
 
-  const { items, total, fullName, address, phoneNumber } = orderDetails;
+  const { items, total, fullName, address, phoneNumber, _id } = orderDetails;
 
   return (
     <div>
@@ -34,8 +36,9 @@ const ConfirmationPage = () => {
           vous sera envoyé sous peu.
         </p>
 
-        <div className="confirmation-details">
+        <div id="invoice" className="confirmation-details">
           <h3>Détails de la commande</h3>
+          <p>Numéro de commande: {_id}</p>
           <ul className="order-items">
             {items.map((item, index) => (
               <li key={index} className="order-item">
@@ -52,7 +55,6 @@ const ConfirmationPage = () => {
               </li>
             ))}
           </ul>
-
           <h3>Informations de livraison</h3>
           <p>
             <strong>Adresse :</strong> {address}
@@ -60,7 +62,6 @@ const ConfirmationPage = () => {
           <p>
             <strong>Téléphone :</strong> {phoneNumber}
           </p>
-
           <h3>Total de la commande</h3>
           <p className="order-total">€{total.toFixed(2)}</p>
         </div>
@@ -68,6 +69,14 @@ const ConfirmationPage = () => {
         <button onClick={() => navigate("/")} className="return-home-button">
           Retour à l'accueil
         </button>
+        <PDFDownloadLink
+          document={<InvoiceDocument orderDetails={orderDetails} />}
+          fileName={`invoice_${_id}.pdf`}
+        >
+          {({ loading }) =>
+            loading ? "Loading document..." : "Télécharger la facture"
+          }
+        </PDFDownloadLink>
       </div>
     </div>
   );

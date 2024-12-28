@@ -66,3 +66,15 @@ p {
 .return-home-button:hover {
   background-color: #07393c;
 }
+.download-invoice-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.download-invoice-button:hover {
+  background-color: #45a049;
+}

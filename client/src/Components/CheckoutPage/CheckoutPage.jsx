@@ -58,6 +58,7 @@ const CheckoutPage = () => {
       navigate("/confirmation", {
         state: {
           order: {
+            _id: response.data.order._id,
             items: cart.items,
             total: cart.items.reduce(
               (acc, item) => acc + item.productId.price * item.quantity,
