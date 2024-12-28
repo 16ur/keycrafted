@@ -10,7 +10,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -80%);
 }
 
 h2 {
@@ -40,24 +40,6 @@ h2 {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.submit-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 18px;
-  background-color: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 18px;
-}
-
-.submit-button:hover {
-  background-color: #3d51ac;
-  box-shadow: 0 4px 15px rgba(71, 102, 241, 0.4);
-}
-
 .error-message,
 .success-message {
   font-size: 14px;
@@ -81,7 +63,7 @@ h2 {
   padding: 12px;
   font-size: 18px;
   background-color: #fff;
-  color: #667eea;
+  color: #2c666e;
   border: 1.8px solid #e0e3ee;
   border-radius: 8px;
   cursor: pointer;
@@ -90,7 +72,7 @@ h2 {
 }
 
 .register-button:hover {
-  border: 2px solid #667eea;
+  border: 2px solid #07393c;
 }
 
 .backLobby {
