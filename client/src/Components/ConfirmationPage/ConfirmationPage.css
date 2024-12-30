@@ -67,14 +67,19 @@ p {
   background-color: #07393c;
 }
 .download-invoice-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4caf50;
+  margin-left: 20px;
+  background-color: #2c666e;
   color: white;
   border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  margin-top: 40px;
+  text-decoration: none;
 }
 
 .download-invoice-button:hover {
-  background-color: #45a049;
+  background-color: #07393c;
 }

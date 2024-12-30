@@ -70,6 +70,7 @@ const ConfirmationPage = () => {
           Retour à l'accueil
         </button>
         <PDFDownloadLink
+          className="download-invoice-button"
           document={<InvoiceDocument orderDetails={orderDetails} />}
           fileName={`invoice_${_id}.pdf`}
         >
