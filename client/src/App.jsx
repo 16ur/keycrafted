@@ -15,6 +15,7 @@ import Footer from "./Components/Footer/Footer.jsx";
 import CheckoutPage from "./Components/CheckoutPage/CheckoutPage.jsx";
 import ConfirmationPage from "./Components/ConfirmationPage/ConfirmationPage.jsx";
 import UserOrders from "./Components/UserOrders/UserOrders.jsx";
+import AboutUs from "./Components/AboutUs/AboutUs.jsx";
 import axios from "axios";
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/confirmation" element={<ConfirmationPage />} />
               <Route path="/user/orders" element={<UserOrders />} />
+              <Route path="/about-us" element={<AboutUs />} />
             </Routes>
           </div>
           <Footer />

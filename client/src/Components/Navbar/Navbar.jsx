@@ -31,7 +31,9 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-left">
-          <button>Qui sommes-nous ?</button>
+          <button onClick={() => navigate("/about-us")}>
+            Qui sommes-nous ?
+          </button>
         </div>
 
         <div className="navbar-center">
