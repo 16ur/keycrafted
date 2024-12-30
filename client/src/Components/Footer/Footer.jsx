@@ -20,7 +20,7 @@ const Footer = () => {
               <a href="/">Accueil</a>
             </li>
             <li>
-              <a href="/search">Activités</a>
+              <a href="/user/account">Votre profil</a>
             </li>
           </ul>
         </div>

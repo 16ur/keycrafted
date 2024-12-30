@@ -70,6 +70,9 @@ const ProductDetails = () => {
             <p className="product-price">€{product.price}</p>
             <p className="product-tax">Taxes incluses.</p>
 
+            <strong>Stock disponible : </strong>
+            {product.stock > 0 ? product.stock : "Rupture de stock"}
+
             {product.options && (
               <div className="product-options">
                 <h3>Switch :</h3>

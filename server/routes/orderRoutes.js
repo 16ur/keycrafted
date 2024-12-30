@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const validateTokenHandler = require("../middleware/validateTokenHandler");
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 
 router.post("/", validateTokenHandler, async (req, res) => {
   const { items, address, phoneNumber, fullName, email, additionalNotes } =
@@ -12,6 +13,7 @@ router.post("/", validateTokenHandler, async (req, res) => {
   }
 
   try {
+    const product = await Product.findById(items.productId);
     const newOrder = new Order({
       userId: req.user.id,
       items,
