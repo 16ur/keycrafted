@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UserAvatar from "../../assets/userAvatar.svg?react";
 import CartUser from "../../assets/cart.svg?react";
 import { useCart } from "../../contexts/CartContext";
+import KCLogo from "../../../public/kc_logo.png";
 import "./Navbar.css";
 
 function Navbar() {
@@ -40,7 +41,7 @@ function Navbar() {
 
         <div className="navbar-center">
           <a href="/" className="navbar-logo">
-            KeyCrafted
+            <img src={KCLogo} alt="KeyCrafted" className="navbar-logo" />
           </a>
         </div>
 

@@ -26,6 +26,10 @@ const CartPage = () => {
     0
   );
 
+  const taxRate = 0.2;
+  const taxes = totalPrice * taxRate;
+  const finalPrice = totalPrice + taxes;
+
   return (
     <div>
       <Navbar />
@@ -82,17 +86,23 @@ const CartPage = () => {
         </div>
 
         <div className="cart-summary">
-          <h2>Total panier</h2>
+          <h2>Récapitulatif</h2>
           <div className="summary-details">
             <p>
-              Total: <span>€{totalPrice.toFixed(2)}</span>
+              Sous-total: <span>€{totalPrice.toFixed(2)}</span>
+            </p>
+            <p>
+              TVA (20%): <span>€{taxes.toFixed(2)}</span>
+            </p>
+            <p className="summary-final">
+              Total: <span>€{finalPrice.toFixed(2)}</span>
             </p>
           </div>
           <button className="clear-cart" onClick={clearCart}>
             Vider le panier
           </button>
           <button className="checkout" onClick={() => navigate("/checkout")}>
-            Commander
+            Passer à la caisse
           </button>
         </div>
       </div>
