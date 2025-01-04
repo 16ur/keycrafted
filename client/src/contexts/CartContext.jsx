@@ -103,6 +103,12 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  const getTotalItems = () => {
+    if (!cart || !cart.items) {
+      return 0;
+    }
+    return cart.items.reduce((total, item) => total + item.quantity, 0);
+  };
   return (
     <>
       <ToastContainer />
@@ -113,6 +119,7 @@ export const CartProvider = ({ children }) => {
           removeFromCart,
           updateQuantity,
           clearCart,
+          getTotalItems,
           loading,
         }}
       >

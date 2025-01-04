@@ -3,10 +3,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import UserAvatar from "../../assets/userAvatar.svg?react";
 import CartUser from "../../assets/cart.svg?react";
+import { useCart } from "../../contexts/CartContext";
 import "./Navbar.css";
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { getTotalItems } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,8 +55,11 @@ function Navbar() {
               height="24px"
             />
           </button>
-          <button onClick={() => navigate("/cart")}>
+          <button onClick={() => navigate("/cart")} className="cart-button">
             <CartUser className="icon" width="24px" height="24px" />
+            {getTotalItems() > 0 && (
+              <span className="cart-count">{getTotalItems()}</span>
+            )}
           </button>
         </div>
       </nav>
