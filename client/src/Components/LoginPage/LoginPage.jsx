@@ -11,10 +11,8 @@ const LoginPage = () => {
   const [message, setMessage] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Initialiser useNavigate
   const navigate = useNavigate();
 
-  // Fonction de gestion de la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,10 +25,8 @@ const LoginPage = () => {
         }
       );
 
-      // Si connexion réussie
       if (response.status === 200) {
         const { accessToken } = response.data;
-        // Sauvegarde du token dans le localStorage
         localStorage.setItem("token", accessToken);
         setIsLoggedIn(true);
 
@@ -45,7 +41,6 @@ const LoginPage = () => {
     }
   };
 
-  // Fonction pour rediriger vers la page d'inscription
   const handleRegisterClick = () => {
     navigate("/auth/user/register");
   };

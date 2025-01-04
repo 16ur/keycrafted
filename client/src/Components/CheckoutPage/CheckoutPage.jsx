@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const CheckoutPage = () => {
-  const { cart } = useCart();
+  const { cart, clearCart } = useCart();
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
@@ -55,6 +55,8 @@ const CheckoutPage = () => {
       );
 
       toast.success("Commande réussie !");
+      clearCart();
+
       navigate("/confirmation", {
         state: {
           order: {
@@ -71,6 +73,7 @@ const CheckoutPage = () => {
         },
       });
     } catch (error) {
+      console.error("Erreur lors de la commande :", error);
       toast.error("Une erreur est survenue lors de la commande.");
     }
   };
