@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../Navbar/Navbar";
 import "./AboutUs.css";
 import Ceo from "../../assets/TeamMembers/CEO.jpg";
-import JohnDoe from "../../assets/TeamMembers/JohnDoe.jpg";
+import JohnDoe from "../../assets/TeamMembers/JohnDoe_2.jpg";
 import JonnaDoe from "../../assets/TeamMembers/JonnaDoe.jpg";
 import Quality from "../../assets/Illustrations/quality.png";
 import Innovation from "../../assets/Illustrations/innovation.png";

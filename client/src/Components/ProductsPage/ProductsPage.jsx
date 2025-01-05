@@ -9,6 +9,7 @@ import Filter from "../Filter/Filter";
 const ProductsPage = () => {
   const { category } = useParams();
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ const ProductsPage = () => {
           `http://localhost:8080/api/products/category/${category}`
         );
         setProducts(response.data);
+        setFilteredProducts(response.data);
       } catch (err) {
         setError("Erreur lors de la récupération des produits.");
       }
@@ -31,20 +33,44 @@ const ProductsPage = () => {
     navigate(`/products/${category}/${id}`);
   };
 
+  const applyFilters = (filters) => {
+    let filtered = products;
+
+    if (filters.priceRange) {
+      filtered = filtered.filter((product) => {
+        if (filters.priceRange === "low") return product.price <= 50;
+        if (filters.priceRange === "medium")
+          return product.price > 50 && product.price <= 100;
+        if (filters.priceRange === "high") return product.price > 100;
+        return true;
+      });
+    }
+
+    if (filters.availability) {
+      filtered = filtered.filter((product) =>
+        filters.availability === "inStock"
+          ? product.stock > 0
+          : product.stock === 0
+      );
+    }
+
+    setFilteredProducts(filtered);
+  };
+
   return (
     <div>
       <Navbar />
       {error && <p>{error}</p>}
-      <Filter />
+      <Filter onApplyFilters={applyFilters} />
       <p className="filter-container">
-        {products.length > 1
-          ? products.length + " " + "résultats"
-          : products.length + " " + "résultat"}{" "}
+        {filteredProducts.length > 1
+          ? filteredProducts.length + " " + "résultats"
+          : filteredProducts.length + " " + "résultat"}{" "}
       </p>
 
       <div className="page-container">
         <div className="products-grid">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div key={product._id} className="product-card">
               <button
                 className="imageButton"
