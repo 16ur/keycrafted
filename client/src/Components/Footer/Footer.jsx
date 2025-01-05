@@ -25,7 +25,17 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-section social"></div>
+        <div className="footer-section contact">
+          <h3>Contact</h3>
+          <ul>
+            <li>
+              <span>Téléphone : </span> 01 23 45 67 89
+            </li>
+            <li>
+              <span>Email : </span> email@idonthavemail.com
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div className="footer-bottom">

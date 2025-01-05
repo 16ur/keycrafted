@@ -68,7 +68,7 @@ const ProductDetails = () => {
             <p className="product-brand">{product.brand}</p>
             <h1 className="product-title">{product.name}</h1>
             <p className="product-price">€{product.price}</p>
-            <p className="product-tax">Taxes incluses.</p>
+            <p className="product-tax">TVA non incluses.</p>
 
             <strong>Stock disponible : </strong>
             {product.stock > 0 ? product.stock : "Rupture de stock"}
@@ -118,6 +118,15 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="product-description-container">
+        <h2>À propos</h2>
+        <p className="description-title">Description</p>
+        <ul className="product-description-list">
+          {product.description.split("\\n").map((line, index) => (
+            <li key={index}>{line}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
