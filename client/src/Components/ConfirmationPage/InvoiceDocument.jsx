@@ -98,6 +98,10 @@ const styles = StyleSheet.create({
 const InvoiceDocument = ({ orderDetails }) => {
   const { items, total, fullName, address, phoneNumber, _id } = orderDetails;
 
+  const taxRate = 0.2;
+  const subTotal = total / (1 + taxRate);
+  const taxes = total - subTotal;
+
   return (
     <Document>
       <Page style={styles.page}>
@@ -142,6 +146,14 @@ const InvoiceDocument = ({ orderDetails }) => {
           ))}
         </View>
 
+        <View style={styles.totalRow}>
+          <Text style={styles.totalLabel}>Sous-total : </Text>
+          <Text style={styles.totalValue}>€{subTotal.toFixed(2)}</Text>
+        </View>
+        <View style={styles.totalRow}>
+          <Text style={styles.totalLabel}>TVA (20%) : </Text>
+          <Text style={styles.totalValue}>€{taxes.toFixed(2)}</Text>
+        </View>
         <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Total : </Text>
           <Text style={styles.totalValue}>€{total.toFixed(2)}</Text>

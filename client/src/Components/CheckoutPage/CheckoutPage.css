@@ -48,6 +48,17 @@
   display: flex;
   flex-direction: column;
 }
+.checkout-pricing p,
+.checkout-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.checkout-pricing span {
+  font-weight: bold;
+}
 
 .checkout-total {
   margin-top: 1.5rem;

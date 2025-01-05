@@ -18,6 +18,14 @@ const CheckoutPage = () => {
   });
   const navigate = useNavigate();
 
+  const taxRate = 0.2;
+  const totalPrice = cart.items.reduce(
+    (acc, item) => acc + item.productId.price * item.quantity,
+    0
+  );
+  const taxes = totalPrice * taxRate;
+  const finalPrice = totalPrice + taxes;
+
   useEffect(() => {
     if (cart.items.length === 0) {
       navigate("/cart");
@@ -62,10 +70,7 @@ const CheckoutPage = () => {
           order: {
             _id: response.data.order._id,
             items: cart.items,
-            total: cart.items.reduce(
-              (acc, item) => acc + item.productId.price * item.quantity,
-              0
-            ),
+            total: finalPrice,
             fullName: formData.fullName,
             address: formData.address,
             phoneNumber: formData.phone,
@@ -103,15 +108,17 @@ const CheckoutPage = () => {
                 </div>
               </div>
             ))}
-            <h3 className="checkout-total">
-              Total : €
-              {cart.items
-                .reduce(
-                  (acc, item) => acc + item.productId.price * item.quantity,
-                  0
-                )
-                .toFixed(2)}
-            </h3>
+            <div className="checkout-pricing">
+              <p>
+                Sous-total : <span>€{totalPrice.toFixed(2)}</span>
+              </p>
+              <p>
+                Taxes (20%) : <span>€{taxes.toFixed(2)}</span>
+              </p>
+              <h3 className="checkout-total">
+                Total : <span>€{finalPrice.toFixed(2)}</span>
+              </h3>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="checkout-form">
