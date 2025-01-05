@@ -15,6 +15,7 @@ const AdminPage = () => {
   const [stock, setStock] = useState("");
   const [brand, setBrand] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [description, setDescription] = useState("");
 
   const navigate = useNavigate();
 
@@ -72,7 +73,7 @@ const AdminPage = () => {
     try {
       await axios.post(
         "http://localhost:8080/api/admin/products",
-        { name, price, brand, category, stock, imageUrl },
+        { name, price, brand, category, stock, imageUrl, description },
         {
           headers: {
             "Content-Type": "application/json",
@@ -88,6 +89,7 @@ const AdminPage = () => {
       setCategory("");
       setStock("");
       setImageUrl("");
+      setDescription("");
     } catch (error) {
       console.error("Erreur lors de l'ajout du produit :", error);
       toast.error("Erreur lors de l'ajout du produit.");
@@ -169,6 +171,17 @@ const AdminPage = () => {
               onChange={(e) => setImageUrl(e.target.value)}
               required
             />
+          </div>
+
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Ajoutez une description avec des sauts de ligne en utilisant 'Entrée'."
+              rows={5}
+              required
+            ></textarea>
           </div>
 
           <button type="submit" className="submit-button">

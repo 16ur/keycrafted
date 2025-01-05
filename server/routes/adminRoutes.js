@@ -5,7 +5,8 @@ const validateAdmin = require("../middleware/validateAdmin");
 const Product = require("../models/Product");
 
 router.post("/products", validateTokenHandler, async (req, res) => {
-  const { name, price, brand, category, stock, imageUrl } = req.body;
+  const { name, price, brand, category, stock, imageUrl, description } =
+    req.body;
 
   try {
     const newProduct = new Product({
@@ -15,6 +16,7 @@ router.post("/products", validateTokenHandler, async (req, res) => {
       category,
       stock,
       imageUrl,
+      description,
     });
     await newProduct.save();
     res

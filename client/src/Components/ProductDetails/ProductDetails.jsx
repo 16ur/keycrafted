@@ -123,11 +123,11 @@ const ProductDetails = () => {
         <h2>À propos</h2>
         <p className="description-title">Description</p>
         <ul className="product-description-list">
-          {product.description.split("\\n").map((line, index) => (
+          {product.description?.split("\n").map((line, index) => (
             <li key={index}>{line}</li>
           ))}
         </ul>
-      </div>
+      </div>{" "}
     </div>
   );
 };
