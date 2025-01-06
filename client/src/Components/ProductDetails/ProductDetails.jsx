@@ -10,6 +10,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -26,6 +27,24 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]);
+
+  useEffect(() => {
+    const fetchRecommendedProducts = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/api/products/similar/${category}/${id}`
+        );
+        setRecommendedProducts(response.data);
+      } catch (err) {
+        console.error(
+          "Erreur lors de la récupération des produits similaires :",
+          err
+        );
+      }
+    };
+
+    fetchRecommendedProducts();
+  }, [category, id]);
 
   if (error) {
     return <p>{error}</p>;
@@ -128,6 +147,40 @@ const ProductDetails = () => {
           ))}
         </ul>
       </div>{" "}
+      <div className="recommendations">
+        <h2>Vous pourriez aussi aimer 👍</h2>
+        <div className="recommendations-grid">
+          {recommendedProducts.map((item) => (
+            <div
+              key={item._id}
+              className="recommended-product"
+              onClick={() =>
+                (window.location.href = `/products/${item.category}/${item._id}`)
+              }
+            >
+              <div className="recommended-image-container">
+                <img
+                  src={`http://localhost:8080${item.imageUrl}`}
+                  alt={item.name}
+                  className="recommended-image"
+                />
+                <div className="image-overlay">
+                  <h3 className="overlay-title">{item.name}</h3>
+                  <button
+                    className="overlay-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.location.href = `/products/${item.category}/${item._id}`;
+                    }}
+                  >
+                    Voir le produit
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
