@@ -78,22 +78,6 @@
   gap: 1rem;
 }
 
-.option-button {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.option-button:hover,
-.option-button.selected {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
 .quantity-selector {
   padding: 0.6rem 1.5rem;
   display: flex;

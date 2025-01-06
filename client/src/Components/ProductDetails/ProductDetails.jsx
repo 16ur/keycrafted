@@ -92,25 +92,6 @@ const ProductDetails = () => {
             <strong>Stock disponible : </strong>
             {product.stock > 0 ? product.stock : "Rupture de stock"}
 
-            {product.options && (
-              <div className="product-options">
-                <h3>Switch :</h3>
-                <div className="options-container">
-                  {product.options.map((option, index) => (
-                    <button
-                      key={index}
-                      className={`option-button ${
-                        selectedOption === option ? "selected" : ""
-                      }`}
-                      onClick={() => setSelectedOption(option)}
-                    >
-                      {option}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
             <div className="quantityAndCartAdd">
               <div className="quantity-selector">
                 <button
