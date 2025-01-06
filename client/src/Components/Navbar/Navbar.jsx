@@ -70,7 +70,9 @@ function Navbar() {
         </button>
         <button onClick={() => handleCategoryClick("keycaps")}>Keycaps</button>
         <button onClick={() => handleCategoryClick("switches")}>Switchs</button>
-        <button>Accessoires</button>
+        <button onClick={() => handleCategoryClick("accessories")}>
+          Accessoires
+        </button>
         <button>Ventes flash</button>
       </div>
     </>

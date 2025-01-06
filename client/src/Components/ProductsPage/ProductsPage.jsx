@@ -85,7 +85,7 @@ const ProductsPage = () => {
               <strong>
                 <p>{product.name}</p>
               </strong>
-              <p className="productPrice">€{product.price}</p>
+              <p className="productPrice">€{product.price.toFixed(2)}</p>
             </div>
           ))}
         </div>
