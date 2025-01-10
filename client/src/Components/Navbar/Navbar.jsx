@@ -6,15 +6,42 @@ import CartUser from "../../assets/cart.svg?react";
 import { useCart } from "../../contexts/CartContext";
 import KCLogo from "../../../public/kc_logo.png";
 import "./Navbar.css";
+import axios from "axios";
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { getTotalItems } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+
+    if (token) {
+      const fetchUserRole = async () => {
+        try {
+          const response = await axios.get(
+            "http://localhost:8080/api/users/current",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.data.role === "admin") {
+            setIsAdmin(true);
+          }
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération du rôle de l'utilisateur :",
+            error
+          );
+        }
+      };
+
+      fetchUserRole();
+    }
   }, []);
 
   const handleUserIconClick = () => {
@@ -45,6 +72,8 @@ function Navbar() {
         </div>
 
         <div className="navbar-right">
+          {isAdmin && <button onClick={() => navigate("/admin")}>Admin</button>}
+
           <button>Français</button>
           <button>EUR €</button>
           <button>
