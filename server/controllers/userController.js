@@ -2,8 +2,10 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
+const { sendWelcomeEmail } = require("../mailer");
+
 //@desc Register a user
-//@route POST /api/users/register
+//@route POST /api/users/register
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, role } = req.body;
@@ -31,6 +33,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
   await user.save();
 
+  sendWelcomeEmail(email, username);
+
   console.log(user);
   if (user) {
     res.status(201).json({
@@ -46,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 //@desc Log a user
-//@route POST /api/users/login
+//@route POST /api/users/login
 //@access public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -80,7 +84,7 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 //@desc Current user
-//@route POST /api/users/current
+//@route POST /api/users/current
 //@access private
 const currentUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
