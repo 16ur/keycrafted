@@ -133,7 +133,6 @@ const AdminPage = () => {
               type="text"
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
-              required
             />
           </div>
 

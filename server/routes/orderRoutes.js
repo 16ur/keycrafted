@@ -14,16 +14,35 @@ router.post("/", validateTokenHandler, async (req, res) => {
   }
 
   try {
-    // Peupler les produits dans les items
+    console.log("Début de la création de la commande");
+
     const populatedItems = await Promise.all(
       items.map(async (item) => {
         const product = await Product.findById(item.productId);
+        if (!product) {
+          throw new Error(`Produit avec l'ID ${item.productId} introuvable`);
+        }
+        if (product.stock < item.quantity) {
+          throw new Error(`Stock insuffisant pour le produit ${product.name}`);
+        }
         return {
           ...item,
           productId: product,
         };
       })
     );
+
+    console.log("Produits peuplés :", populatedItems);
+
+    await Promise.all(
+      populatedItems.map(async (item) => {
+        const product = item.productId;
+        product.stock -= item.quantity;
+        await product.save();
+      })
+    );
+
+    console.log("Quantité des produits mise à jour");
 
     const newOrder = new Order({
       userId: req.user.id,
@@ -38,6 +57,8 @@ router.post("/", validateTokenHandler, async (req, res) => {
     });
 
     await newOrder.save();
+    console.log("Commande sauvegardée :", newOrder);
+
     sendOrderConfirmationEmail(email, newOrder);
     res
       .status(201)
