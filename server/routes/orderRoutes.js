@@ -3,6 +3,7 @@ const router = express.Router();
 const validateTokenHandler = require("../middleware/validateTokenHandler");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const { sendOrderConfirmationEmail } = require("../mailer");
 
 router.post("/", validateTokenHandler, async (req, res) => {
   const { items, address, phoneNumber, fullName, email, additionalNotes } =
@@ -13,10 +14,20 @@ router.post("/", validateTokenHandler, async (req, res) => {
   }
 
   try {
-    const product = await Product.findById(items.productId);
+    // Peupler les produits dans les items
+    const populatedItems = await Promise.all(
+      items.map(async (item) => {
+        const product = await Product.findById(item.productId);
+        return {
+          ...item,
+          productId: product,
+        };
+      })
+    );
+
     const newOrder = new Order({
       userId: req.user.id,
-      items,
+      items: populatedItems,
       address,
       phoneNumber,
       fullName,
@@ -27,6 +38,7 @@ router.post("/", validateTokenHandler, async (req, res) => {
     });
 
     await newOrder.save();
+    sendOrderConfirmationEmail(email, newOrder);
     res
       .status(201)
       .json({ message: "Commande créée avec succès.", order: newOrder });
