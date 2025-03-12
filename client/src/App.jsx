@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import "./App.css";
 import Navbar from "./Components/Navbar/Navbar.jsx";
@@ -59,10 +64,17 @@ function App() {
               <Route path="/brand/:brand" element={<BrandPage />} />
             </Routes>
           </div>
-          <Footer />
+          <ConditionalFooter />
         </Router>
       </CartProvider>
     </div>
   );
 }
+
+const ConditionalFooter = () => {
+  const location = useLocation();
+  const noFooterRoutes = ["/auth/user/login", "/auth/user/register"];
+  return !noFooterRoutes.includes(location.pathname) ? <Footer /> : null;
+};
+
 export default App;

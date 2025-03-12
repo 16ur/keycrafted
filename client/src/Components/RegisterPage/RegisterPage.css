@@ -86,7 +86,7 @@ h2 {
   padding: 12px;
   font-size: 18px;
   background-color: #fff;
-  color: #667eea;
+  color: #2c666e;
   border: 1.8px solid #e0e3ee;
   border-radius: 8px;
   cursor: pointer;
@@ -95,7 +95,7 @@ h2 {
 }
 
 .login-button:hover {
-  border: 2px solid #667eea;
+  border: 2px solid #07393c;
 }
 
 .backLobby {
@@ -118,4 +118,42 @@ h2 {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 45px; 
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 20px; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.toggle-password:hover {
+  color: #007bff;
+}
+
+.form-group {
+  width: 100%;
+  position: relative;
 }

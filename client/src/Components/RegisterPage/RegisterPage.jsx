@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
 import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // État pour gérer l'affichage du mot de passe
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ const RegisterPage = () => {
       </button>
       {error && <div className="error-message">{error}</div>}
       {message && <div className="success-message">{message}</div>}
+
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Nom d'utilisateur :</label>
@@ -53,8 +56,10 @@ const RegisterPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            placeholder="Entrez votre nom d'utilisateur"
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="email">Email :</label>
           <input
@@ -63,22 +68,36 @@ const RegisterPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Entrez votre email"
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Entrez votre mot de passe"
+            />
+            <button
+              type="button"
+              className="toggle-password"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
+
         <button type="submit" className="submit-button">
           S'inscrire
         </button>
       </form>
+
       <button
         className="login-button"
         onClick={() => navigate("/auth/user/login")}
