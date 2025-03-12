@@ -42,3 +42,17 @@
   border: none;
   background-color: transparent;
 }
+
+.brand-title-container {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.brand-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+

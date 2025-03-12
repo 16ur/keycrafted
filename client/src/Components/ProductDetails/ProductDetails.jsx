@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import "./ProductDetails.css";
@@ -12,6 +12,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -84,7 +85,13 @@ const ProductDetails = () => {
           />
 
           <div className="product-info">
-            <p className="product-brand">{product.brand}</p>
+            <p
+              className="product-brand"
+              onClick={() => navigate(`/brand/${product.brand}`)}
+              style={{ cursor: "pointer", color: "blue" }}
+            >
+              {product.brand}
+            </p>
             <h1 className="product-title">{product.name}</h1>
             <p className="product-price">€{product.price}</p>
             <p className="product-tax">TVA non incluses.</p>
@@ -135,9 +142,7 @@ const ProductDetails = () => {
             <div
               key={item._id}
               className="recommended-product"
-              onClick={() =>
-                (window.location.href = `/products/${item.category}/${item._id}`)
-              }
+              onClick={() => navigate(`/products/${item.category}/${item._id}`)}
             >
               <div className="recommended-image-container">
                 <img
@@ -151,7 +156,7 @@ const ProductDetails = () => {
                     className="overlay-button"
                     onClick={(e) => {
                       e.stopPropagation();
-                      window.location.href = `/products/${item.category}/${item._id}`;
+                      navigate(`/products/${item.category}/${item._id}`);
                     }}
                   >
                     Voir le produit

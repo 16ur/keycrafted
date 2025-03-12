@@ -32,6 +32,21 @@ router.get("/similar/:category/:id", async (req, res) => {
     });
   }
 });
+
 router.get("/recent", getRecentProducts);
+
+router.get("/brand/:brand", async (req, res) => {
+  const { brand } = req.params;
+  try {
+    const products = await Product.find({ brand });
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des produits par marque :",
+      error
+    );
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
 
 module.exports = router;

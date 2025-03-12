@@ -45,6 +45,8 @@ app.get("/api/products", async (req, res) => {
   res.json({ products });
 });
 
+app.use("/api/products", productRoutes);
+
 app.post("/api/products", async (req, res) => {
   const { name, price, brand, category, stock, description, imageUrl } =
     req.body;
@@ -94,7 +96,6 @@ app.get("/api/products/:category/:id", async (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
 
