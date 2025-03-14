@@ -7,13 +7,19 @@ const cartRoutes = require("./routes/cartRoutes");
 const productRoutes = require("./routes/productsRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 const cors = require("cors");
 require("dotenv").config();
 
 const corsOptions = {
   origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+
+app.use(cors(corsOptions));
 mongoose.connect("mongodb://localhost:27017/smtp_bd");
 
 const db = mongoose.connection;
@@ -21,14 +27,6 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   console.log("Connected to MongoDB");
 });
-
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -98,6 +96,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");

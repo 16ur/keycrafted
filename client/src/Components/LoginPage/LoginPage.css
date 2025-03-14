@@ -165,3 +165,22 @@ h2 {
   width: 100%;
   position: relative;
 }
+
+.forgot-password-container {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.forgot-password {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.forgot-password:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

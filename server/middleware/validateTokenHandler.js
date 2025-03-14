@@ -2,24 +2,24 @@ const asyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 
 const validateTokenHandler = asyncHandler(async (req, res, next) => {
-  let token;
-  let authHeader = req.headers.authorization || req.headers.Authorization;
-  if (authHeader && authHeader.startsWith("Bearer")) {
-    token = authHeader.split(" ")[1];
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-      if (err) {
-        res.status(401);
-        throw new Error("Token non valide");
-      }
-      req.user = decoded.user;
-      next();
-    });
+  const authHeader = req.headers.authorization || req.headers.Authorization;
 
-    if (!token) {
-      res.status(401);
-      throw new Error("Token non valide");
-    }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Accès refusé. Aucun token fourni." });
   }
+
+  const token = authHeader.split(" ")[1];
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Token non valide ou expiré." });
+    }
+
+    req.user = decoded.user;
+    next();
+  });
 });
 
 module.exports = validateTokenHandler;
