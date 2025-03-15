@@ -73,6 +73,9 @@ function Navbar() {
 
         <div className="navbar-right">
           {isAdmin && <button onClick={() => navigate("/admin")}>Admin</button>}
+          {isAdmin && (
+            <button onClick={() => navigate("/admin/orders")}>Commandes</button>
+          )}
 
           <button>Français</button>
           <button>EUR €</button>

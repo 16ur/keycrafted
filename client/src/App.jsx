@@ -22,8 +22,7 @@ import ConfirmationPage from "./Components/ConfirmationPage/ConfirmationPage.jsx
 import UserOrders from "./Components/UserOrders/UserOrders.jsx";
 import AboutUs from "./Components/AboutUs/AboutUs.jsx";
 import BrandPage from "./Components/BrandPage/BrandPage.jsx";
-import ForgotPassword from "./Components/ForgotPassword/ForgotPassword.jsx";
-import ResetPassword from "./Components/ResetPassword/ResetPassword.jsx";
+import AdminOrders from "./Components/AdminOrders/AdminOrders.jsx";
 import axios from "axios";
 
 function App() {
@@ -60,6 +59,7 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin/orders" element={<AdminOrders />} />
               <Route path="/confirmation" element={<ConfirmationPage />} />
               <Route path="/user/orders" element={<UserOrders />} />
               <Route path="/about-us" element={<AboutUs />} />

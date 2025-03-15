@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Icônes pour afficher/masquer le mot de passe
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import "./LoginPage.css";
 
 const LoginPage = () => {

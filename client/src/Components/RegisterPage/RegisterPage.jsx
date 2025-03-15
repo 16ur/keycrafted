@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
+import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import "./RegisterPage.css";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // État pour gérer l'affichage du mot de passe
+  const [showPassword, setShowPassword] = useState(false); 
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../Navbar/Navbar";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./UserOrders.css";
 
 const UserOrders = () => {
@@ -34,48 +35,150 @@ const UserOrders = () => {
     fetchOrders();
   }, []);
 
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    };
+    return new Date(dateString).toLocaleDateString("fr-FR", options);
+  };
+
   if (loading) {
-    return <p>Chargement des commandes...</p>;
+    return (
+      <div className="user-orders-container">
+        <h2>Chargement des commandes...</h2>
+      </div>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div className="user-orders-container">
+        <h2>Erreur</h2>
+        <p className="error-message">{error}</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <div className="orders-container">
-        <h2 className="h2-orders">Mes Commandes</h2>
-        {orders.length === 0 ? (
-          <p>Vous n'avez pas encore passé de commande.</p>
-        ) : (
-          orders.map((order) => (
+    <div className="user-orders-container">
+      <ToastContainer position="top-right" />
+      <h2 className="user-orders-title">Mes commandes</h2>
+      {orders.length === 0 ? (
+        <p className="no-orders">Vous n'avez pas encore passé de commande.</p>
+      ) : (
+        <div className="orders-list">
+          {[...orders].reverse().map((order) => (
             <div key={order._id} className="order-card">
-              <h3>Commande #{order._id}</h3>
-              <p>Date : {new Date(order.createdAt).toLocaleString()}</p>
-              <p>Adresse : {order.address}</p>
-              <p>Téléphone : {order.phoneNumber}</p>
-              <ul>
-                {order.items.map((item, index) => (
-                  <li key={index}>
-                    {item.productId.name} - {item.quantity} x €
-                    {item.productId.price.toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-              <p>
-                <strong>Total :</strong> €
-                {order.items
-                  .reduce(
-                    (acc, item) => acc + item.quantity * item.productId.price,
-                    0
-                  )
-                  .toFixed(2)}
-              </p>
+              <div className="order-header">
+                <h3>Commande #{order._id}</h3>
+                <span className={`status-badge ${order.status}`}>
+                  {order.status === "pending" && "En attente"}
+                  {order.status === "shipped" && "Expédiée"}
+                  {order.status === "delivered" && "Livrée"}
+                </span>
+              </div>
+
+              <div className="order-info">
+                <p>
+                  <strong>Date:</strong> {formatDate(order.createdAt)}
+                </p>
+                <p>
+                  <strong>Adresse de livraison:</strong> {order.address}
+                </p>
+                <p>
+                  <strong>Téléphone:</strong> {order.phoneNumber}
+                </p>
+                {order.additionalNotes && (
+                  <p>
+                    <strong>Notes:</strong> {order.additionalNotes}
+                  </p>
+                )}
+              </div>
+
+              <div className="order-items">
+                <h4>Produits commandés</h4>
+                <table className="items-table">
+                  <thead>
+                    <tr>
+                      <th>Produit</th>
+                      <th>Prix unitaire</th>
+                      <th>Quantité</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {order.items.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.productId.name}</td>
+                        <td>{item.productId.price.toFixed(2)}€</td>
+                        <td>{item.quantity}</td>
+                        <td>
+                          {(item.productId.price * item.quantity).toFixed(2)}€
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colSpan="3" className="total-label">
+                        Total
+                      </td>
+                      <td className="order-total">
+                        {order.items
+                          .reduce(
+                            (acc, item) =>
+                              acc + item.productId.price * item.quantity,
+                            0
+                          )
+                          .toFixed(2)}
+                        €
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              <div className="order-status-info">
+                <p>
+                  <strong>Statut de la commande:</strong>
+                </p>
+                <div className="status-indicators">
+                  <div
+                    className={`status-step ${
+                      order.status === "pending" ? "active" : ""
+                    }`}
+                  >
+                    <div className="status-circle"></div>
+                    <span>En attente</span>
+                  </div>
+                  <div className="status-line"></div>
+                  <div
+                    className={`status-step ${
+                      order.status === "shipped" ? "active" : ""
+                    }`}
+                  >
+                    <div className="status-circle"></div>
+                    <span>Expédiée</span>
+                  </div>
+                  <div className="status-line"></div>
+                  <div
+                    className={`status-step ${
+                      order.status === "delivered" ? "active" : ""
+                    }`}
+                  >
+                    <div className="status-circle"></div>
+                    <span>Livrée</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

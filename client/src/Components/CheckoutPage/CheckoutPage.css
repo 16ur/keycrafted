@@ -125,3 +125,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.readonly-input {
+  background-color: #f8f8f8;
+  color: #666;
+  cursor: not-allowed;
+  border: 1px solid #ddd;
+}
+
+.form-info {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 4px;
+}

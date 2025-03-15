@@ -1,36 +1,60 @@
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useCart } from "../../contexts/CartContext";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
-import "./CheckoutPage.css";
+import { CartContext } from "../../contexts/CartContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./CheckoutPage.css";
 
 const CheckoutPage = () => {
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart } = useContext(CartContext);
+  const navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
     phone: "",
-    email: "",
     additionalNotes: "",
   });
-  const navigate = useNavigate();
 
-  const taxRate = 0.2;
   const totalPrice = cart.items.reduce(
     (acc, item) => acc + item.productId.price * item.quantity,
     0
   );
-  const taxes = totalPrice * taxRate;
+  const taxes = totalPrice * 0.2;
   const finalPrice = totalPrice + taxes;
 
   useEffect(() => {
-    if (cart.items.length === 0) {
-      navigate("/cart");
-    }
-  }, [cart, navigate]);
+    const fetchUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/auth/user/login");
+          return;
+        }
+
+        const response = await axios.get(
+          "http://localhost:8080/api/users/current",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setUserEmail(response.data.email);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des informations utilisateur:",
+          error
+        );
+        toast.error("Erreur lors de la récupération de vos informations.");
+      }
+    };
+
+    fetchUserInfo();
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +76,7 @@ const CheckoutPage = () => {
           address: formData.address,
           phoneNumber: formData.phone,
           fullName: formData.fullName,
-          email: formData.email,
+          email: userEmail, 
           additionalNotes: formData.additionalNotes,
         },
         {
@@ -158,11 +182,11 @@ const CheckoutPage = () => {
               <label>Email</label>
               <input
                 type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
+                value={userEmail}
+                readOnly
+                className="readonly-input"
               />
+              <small className="form-info">Email associé à votre compte</small>
             </div>
             <div className="form-group">
               <label>Notes supplémentaires</label>
