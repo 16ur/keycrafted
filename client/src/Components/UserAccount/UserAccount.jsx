@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import UserOrders from "../UserOrders/UserOrders";
 import "./UserAccount.css";
-import { FaUser, FaEnvelope, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaSignOutAlt, FaUserEdit } from "react-icons/fa";
 
 const UserAccount = () => {
   const [user, setUser] = useState({});
@@ -60,6 +60,7 @@ const UserAccount = () => {
           </div>
           <h1>Bienvenue, {user.username || "Utilisateur"} !</h1>
           <div className="user-details">
+            {/* Détails utilisateur existants */}
             <div className="user-detail-item">
               <FaUser className="user-detail-icon" />
               <span>{user.username}</span>
@@ -68,6 +69,15 @@ const UserAccount = () => {
               <FaEnvelope className="user-detail-icon" />
               <span>{user.email}</span>
             </div>
+
+            {/* Nouveau bouton pour accéder à la page de profil */}
+            <button
+              className="logout-button"
+              onClick={() => navigate("/user/profile")}
+            >
+              <FaUserEdit className="edit-profile-icon" />
+              Modifier mon profil
+            </button>
           </div>
           <button className="logout-button" onClick={handleLogout}>
             <FaSignOutAlt className="logout-icon" />

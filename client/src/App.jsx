@@ -25,6 +25,7 @@ import BrandPage from "./Components/BrandPage/BrandPage.jsx";
 import AdminOrders from "./Components/AdminOrders/AdminOrders.jsx";
 import UserOrdersAdmin from "./Components/UserOrdersAdmin/UserOrdersAdmin.jsx";
 import SearchResults from "./Components/SearchResults/SearchResults";
+import UserProfile from "./Components/UserProfile/UserProfile";
 
 import axios from "axios";
 
@@ -72,6 +73,7 @@ function App() {
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/brand/:brand" element={<BrandPage />} />
               <Route path="/search" element={<SearchResults />} />
+              <Route path="/user/profile" element={<UserProfile />} />
             </Routes>
           </div>
           <ConditionalFooter />

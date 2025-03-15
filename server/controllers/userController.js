@@ -100,4 +100,80 @@ const currentUser = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { registerUser, loginUser, currentUser };
+//@desc Get user profile
+//@route GET /api/users/profile
+//@access private
+const getUserProfile = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      res.status(404);
+      throw new Error("Utilisateur non trouvé");
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500);
+    throw new Error("Erreur lors de la récupération du profil utilisateur");
+  }
+});
+
+//@desc Update user profile
+//@route PUT /api/users/profile
+//@access private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("Utilisateur non trouvé");
+    }
+
+    if (req.body.email && req.body.email !== user.email) {
+      const existingUser = await User.findOne({ email: req.body.email });
+      if (existingUser) {
+        res.status(400);
+        throw new Error("Cet email est déjà utilisé");
+      }
+    }
+
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
+    user.fullName = req.body.fullName || user.fullName;
+    user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
+    user.address = req.body.address || user.address;
+    user.city = req.body.city || user.city;
+    user.postalCode = req.body.postalCode || user.postalCode;
+    user.country = req.body.country || user.country;
+
+    if (req.body.password) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      role: updatedUser.role,
+      fullName: updatedUser.fullName,
+      phoneNumber: updatedUser.phoneNumber,
+      address: updatedUser.address,
+      city: updatedUser.city,
+      postalCode: updatedUser.postalCode,
+      country: updatedUser.country,
+    });
+  } catch (error) {
+    res.status(500);
+    throw new Error("Erreur lors de la mise à jour du profil");
+  }
+});
+
+module.exports = {
+  registerUser,
+  loginUser,
+  currentUser,
+  getUserProfile,
+  updateUserProfile,
+};
