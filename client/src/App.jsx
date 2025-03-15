@@ -24,6 +24,8 @@ import AboutUs from "./Components/AboutUs/AboutUs.jsx";
 import BrandPage from "./Components/BrandPage/BrandPage.jsx";
 import AdminOrders from "./Components/AdminOrders/AdminOrders.jsx";
 import UserOrdersAdmin from "./Components/UserOrdersAdmin/UserOrdersAdmin.jsx";
+import SearchResults from "./Components/SearchResults/SearchResults";
+
 import axios from "axios";
 
 function App() {
@@ -69,6 +71,7 @@ function App() {
               <Route path="/user/orders" element={<UserOrders />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/brand/:brand" element={<BrandPage />} />
+              <Route path="/search" element={<SearchResults />} />
             </Routes>
           </div>
           <ConditionalFooter />
