@@ -55,6 +55,8 @@ const ProductDetails = () => {
     return <p>Chargement des détails du produit...</p>;
   }
 
+  const isInStock = product.stock > 0;
+
   return (
     <div>
       <Navbar />
@@ -96,14 +98,21 @@ const ProductDetails = () => {
             <p className="product-price">€{product.price}</p>
             <p className="product-tax">TVA non incluses.</p>
 
-            <strong>Stock disponible : </strong>
-            {product.stock > 0 ? product.stock : "Rupture de stock"}
+            <div className="stock-info">
+              <strong>Stock disponible : </strong>
+              {isInStock ? (
+                <span className="in-stock-text">{product.stock}</span>
+              ) : (
+                <span className="out-of-stock-text">Rupture de stock</span>
+              )}
+            </div>
 
             <div className="quantityAndCartAdd">
               <div className="quantity-selector">
                 <button
                   onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
                   className="quantity-button"
+                  disabled={!isInStock}
                 >
                   -
                 </button>
@@ -111,6 +120,7 @@ const ProductDetails = () => {
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   className="quantity-button"
+                  disabled={!isInStock || quantity >= product.stock}
                 >
                   +
                 </button>
@@ -118,9 +128,10 @@ const ProductDetails = () => {
 
               <button
                 onClick={() => addToCart(product, quantity)}
-                className="add-to-cart-button"
+                className={`add-to-cart-button ${!isInStock ? "disabled" : ""}`}
+                disabled={!isInStock}
               >
-                Ajouter au panier
+                {isInStock ? "Ajouter au panier" : "Indisponible"}
               </button>
             </div>
           </div>

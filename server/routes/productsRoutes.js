@@ -75,4 +75,28 @@ router.get("/search", async (req, res) => {
   }
 });
 
+router.get("/brands", async (req, res) => {
+  try {
+    const brands = await Product.distinct("brand");
+    res.status(200).json(brands);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des marques :", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+router.get("/brands/:category", async (req, res) => {
+  const { category } = req.params;
+  try {
+    const brands = await Product.distinct("brand", { category });
+    res.status(200).json(brands);
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des marques par catégorie :",
+      error
+    );
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
 module.exports = router;
