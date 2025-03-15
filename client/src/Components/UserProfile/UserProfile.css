@@ -189,7 +189,6 @@
   }
 }
 
-/* Ajouter ces styles à votre fichier UserProfile.css */
 
 .header-left {
   display: flex;
@@ -216,7 +215,6 @@
   transform: translateX(-2px);
 }
 
-/* Ajuster le header pour la nouvelle structure */
 .profile-header {
   display: flex;
   justify-content: space-between;

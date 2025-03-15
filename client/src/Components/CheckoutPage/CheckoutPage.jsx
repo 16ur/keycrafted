@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../Navbar/Navbar";
-import { CartContext } from "../../contexts/CartContext";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "../Navbar/Navbar";
 import "./CheckoutPage.css";
+import { useCart } from "../../contexts/CartContext";
 
 const CheckoutPage = () => {
-  const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
+  const { cart, clearCart } = useCart();
   const [userEmail, setUserEmail] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -17,16 +17,19 @@ const CheckoutPage = () => {
     phone: "",
     additionalNotes: "",
   });
+  const [loading, setLoading] = useState(true);
 
-  const totalPrice = cart.items.reduce(
-    (acc, item) => acc + item.productId.price * item.quantity,
-    0
-  );
+  const totalPrice =
+    cart?.items?.reduce(
+      (acc, item) => acc + item.productId.price * item.quantity,
+      0
+    ) || 0;
   const taxes = totalPrice * 0.2;
   const finalPrice = totalPrice + taxes;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -35,7 +38,7 @@ const CheckoutPage = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:8080/api/users/current",
+          "http://localhost:8080/api/users/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -43,13 +46,28 @@ const CheckoutPage = () => {
           }
         );
 
-        setUserEmail(response.data.email);
+        const userData = response.data;
+
+        setFormData({
+          fullName: userData.fullName || "",
+          address: userData.address
+            ? `${userData.address}, ${userData.postalCode || ""} ${
+                userData.city || ""
+              }`
+            : "",
+          phone: userData.phoneNumber || "",
+          additionalNotes: "",
+        });
+
+        setUserEmail(userData.email);
       } catch (error) {
         console.error(
           "Erreur lors de la récupération des informations utilisateur:",
           error
         );
         toast.error("Erreur lors de la récupération de vos informations.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -76,7 +94,7 @@ const CheckoutPage = () => {
           address: formData.address,
           phoneNumber: formData.phone,
           fullName: formData.fullName,
-          email: userEmail, 
+          email: userEmail,
           additionalNotes: formData.additionalNotes,
         },
         {
@@ -106,6 +124,18 @@ const CheckoutPage = () => {
       toast.error("Une erreur est survenue lors de la commande.");
     }
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Navbar />
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Chargement de vos informations...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -155,18 +185,28 @@ const CheckoutPage = () => {
                 value={formData.fullName}
                 onChange={handleInputChange}
                 required
+                placeholder="Votre nom complet"
               />
+              <small className="form-info">
+                {!formData.fullName &&
+                  "Remplissez votre profil pour sauvegarder ces informations"}
+              </small>
             </div>
             <div className="form-group">
               <label>Adresse</label>
               <input
                 type="text"
                 name="address"
-                maxLength={50}
+                maxLength={100}
                 value={formData.address}
                 onChange={handleInputChange}
                 required
+                placeholder="Adresse complète: rue, code postal, ville"
               />
+              <small className="form-info">
+                {!formData.address &&
+                  "Remplissez votre profil pour sauvegarder ces informations"}
+              </small>
             </div>
             <div className="form-group">
               <label>Numéro de téléphone</label>
@@ -176,7 +216,12 @@ const CheckoutPage = () => {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
+                placeholder="Votre numéro de téléphone"
               />
+              <small className="form-info">
+                {!formData.phone &&
+                  "Remplissez votre profil pour sauvegarder ces informations"}
+              </small>
             </div>
             <div className="form-group">
               <label>Email</label>
@@ -194,6 +239,7 @@ const CheckoutPage = () => {
                 name="additionalNotes"
                 value={formData.additionalNotes}
                 onChange={handleInputChange}
+                placeholder="Instructions spéciales pour la livraison (optionnel)"
               ></textarea>
             </div>
             <button type="submit" className="checkout-button">

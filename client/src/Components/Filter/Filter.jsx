@@ -283,7 +283,6 @@ const Filter = ({ onApplyFilters, category }) => {
         )}
       </div>
 
-      {/* Filtres spécifiques à la catégorie */}
       {getCategorySpecificFilters()}
 
       <button className="apply-filters-button" onClick={applyFilters}>

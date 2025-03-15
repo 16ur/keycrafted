@@ -155,7 +155,6 @@
   border-color: #2c666e;
 }
 
-/* Styles responsifs */
 @media (max-width: 992px) {
   .filter-sidebar {
     position: static;

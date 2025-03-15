@@ -60,7 +60,6 @@ const UserAccount = () => {
           </div>
           <h1>Bienvenue, {user.username || "Utilisateur"} !</h1>
           <div className="user-details">
-            {/* Détails utilisateur existants */}
             <div className="user-detail-item">
               <FaUser className="user-detail-icon" />
               <span>{user.username}</span>
@@ -70,7 +69,6 @@ const UserAccount = () => {
               <span>{user.email}</span>
             </div>
 
-            {/* Nouveau bouton pour accéder à la page de profil */}
             <button
               className="logout-button"
               onClick={() => navigate("/user/profile")}

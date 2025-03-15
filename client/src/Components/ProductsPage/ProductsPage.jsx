@@ -148,14 +148,12 @@ const ProductsPage = () => {
                   className="product-card"
                   onClick={() => handleProductClick(product._id)}
                 >
-                  {/* Badge de stock */}
                   {product.stock > 0 ? (
                     <div className="stock-badge in-stock">En stock</div>
                   ) : (
                     <div className="stock-badge out-of-stock">Rupture</div>
                   )}
 
-                  {/* Image du produit */}
                   <div className="imageButton">
                     <img
                       src={`http://localhost:8080${product.imageUrl}`}
@@ -163,9 +161,6 @@ const ProductsPage = () => {
                       className="product-image"
                     />
                   </div>
-
-                  {/* Informations du produit */}
-                  {/* Informations du produit */}
                   <div className="product-info">
                     <div className="product-category">
                       {product.brand || ""}
@@ -175,7 +170,6 @@ const ProductsPage = () => {
                       <div className="productPrice">
                         €{product.price.toFixed(2)}
                       </div>
-                      {/* Retirer ce bouton vide */}
                     </div>
                   </div>
                 </div>

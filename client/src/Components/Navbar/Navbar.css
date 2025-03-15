@@ -54,7 +54,6 @@
   color: #2c666e;
 }
 
-/* Effet de soulignement animé */
 .navbar-link::after {
   content: "";
   position: absolute;
@@ -121,7 +120,6 @@
   font-weight: bold;
 }
 
-/* Dropdown styles */
 .category-dropdown {
   position: relative;
 }
@@ -178,7 +176,6 @@
   color: #2c666e;
 }
 
-/* Search styles */
 .search-container {
   position: relative;
 }
@@ -347,7 +344,6 @@ search-result-name {
   font-style: italic;
 }
 
-/* Styles pour les écrans mobiles */
 @media (max-width: 768px) {
   .search-dropdown {
     position: fixed;
@@ -369,17 +365,15 @@ search-result-name {
 }
 
 .search-toggle svg {
-  width: 16px; /* Ajuster à la même taille que vos autres icônes */
+  width: 16px; 
   height: 16px;
 }
 
-/* Style pour vos icônes SVG personnalisées */
 .icon {
   width: 20px;
   height: 20px;
 }
 
-/* Media queries */
 @media (max-width: 992px) {
   .navbar-links {
     margin-left: 2rem;
@@ -397,7 +391,7 @@ search-result-name {
   }
 
   .navbar-links {
-    display: none; /* On mobile, we would replace this with a hamburger menu */
+    display: none; 
   }
 
   .navbar-logo {
