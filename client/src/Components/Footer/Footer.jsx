@@ -29,10 +29,10 @@ const Footer = () => {
           <h3>Contact</h3>
           <ul>
             <li>
-              <span>Téléphone : </span> 01 23 45 67 89
+              <span>Téléphone : </span> 07 83 51 51 41
             </li>
             <li>
-              <span>Email : </span> email@idonthavemail.com
+              <span>Email : </span> axel.manguian@etu.univ-amu.fr
             </li>
           </ul>
         </div>

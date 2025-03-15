@@ -389,3 +389,36 @@
     font-size: 0.75rem;
   }
 }
+
+
+.promo-applied {
+  background-color: #f8f9fa;
+  border: 1px dashed #2c666e;
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.promo-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2c666e;
+}
+
+.promo-icon {
+  color: #2c666e;
+}
+
+.discount-line {
+  color: #2c666e !important;
+  font-weight: 600;
+}
+
+.discount-line span {
+  color: #e74c3c !important;
+  font-weight: 700;
+}

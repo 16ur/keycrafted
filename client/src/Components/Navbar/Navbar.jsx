@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaSearch, FaChevronDown, FaTimes } from "react-icons/fa";
+import {
+  FaSearch,
+  FaChevronDown,
+  FaTimes,
+  FaCog,
+  FaBox,
+  FaShoppingBag,
+  FaTicketAlt,
+} from "react-icons/fa";
 import UserAvatar from "../../assets/userAvatar.svg?react";
 import CartUser from "../../assets/cart.svg?react";
 import { useCart } from "../../contexts/CartContext";
@@ -16,17 +24,21 @@ function Navbar() {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const { getTotalItems } = useCart();
+  const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
+
+  const { cart, getTotalItems } = useCart();
+
   const navigate = useNavigate();
   const searchInputRef = useRef(null);
   const searchContainerRef = useRef(null);
   const categoriesRef = useRef(null);
+  const adminMenuRef = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-
     if (token) {
+      setIsLoggedIn(true);
+
       const fetchUserRole = async () => {
         try {
           const response = await axios.get(
@@ -63,6 +75,12 @@ function Navbar() {
         !searchContainerRef.current.contains(event.target)
       ) {
         setIsSearchOpen(false);
+      }
+      if (
+        adminMenuRef.current &&
+        !adminMenuRef.current.contains(event.target)
+      ) {
+        setIsAdminMenuOpen(false);
       }
     };
 
@@ -149,6 +167,15 @@ function Navbar() {
     searchInputRef.current?.focus();
   };
 
+  const toggleAdminMenu = () => {
+    setIsAdminMenuOpen(!isAdminMenuOpen);
+  };
+
+  const navigateToAdminPage = (page) => {
+    navigate(page);
+    setIsAdminMenuOpen(false);
+  };
+
   return (
     <header className="header">
       <div className="navbar-container">
@@ -158,6 +185,9 @@ function Navbar() {
           </div>
 
           <div className="navbar-links">
+            <div className="navbar-link" onClick={() => navigate("/")}>
+              Accueil
+            </div>
             <div className="navbar-link" onClick={() => navigate("/about-us")}>
               À propos
             </div>
@@ -204,17 +234,40 @@ function Navbar() {
             </div>
 
             {isAdmin && (
-              <>
-                <div className="navbar-link" onClick={() => navigate("/admin")}>
-                  Administration
+              <div className="navbar-link admin-dropdown" ref={adminMenuRef}>
+                <div className="dropdown-toggle" onClick={toggleAdminMenu}>
+                  Administration{" "}
+                  <FaChevronDown
+                    className={`chevron ${isAdminMenuOpen ? "rotate" : ""}`}
+                  />
                 </div>
-                <div
-                  className="navbar-link"
-                  onClick={() => navigate("/admin/orders")}
-                >
-                  Commandes
-                </div>
-              </>
+
+                {isAdminMenuOpen && (
+                  <div className="dropdown-menu admin-dropdown-menu">
+                    <div
+                      className="dropdown-item"
+                      onClick={() => navigateToAdminPage("/admin")}
+                    >
+                      <FaBox className="dropdown-icon" />
+                      Gestion des produits
+                    </div>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => navigateToAdminPage("/admin/orders")}
+                    >
+                      <FaShoppingBag className="dropdown-icon" />
+                      Gestion des commandes
+                    </div>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => navigateToAdminPage("/admin/promo-codes")}
+                    >
+                      <FaTicketAlt className="dropdown-icon" />
+                      Codes promotionnels
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 

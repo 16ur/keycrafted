@@ -172,11 +172,16 @@ const UserOrdersAdmin = () => {
                 <p className="summary-number">
                   {orders
                     .reduce((total, order) => {
-                      const orderTotal = order.items.reduce(
-                        (sum, item) =>
-                          sum + item.productId.price * item.quantity,
-                        0
-                      );
+                      const orderTotal = order.items.reduce((sum, item) => {
+                        if (
+                          item.productId &&
+                          typeof item.productId === "object" &&
+                          item.productId.price
+                        ) {
+                          return sum + item.productId.price * item.quantity;
+                        }
+                        return sum;
+                      }, 0);
                       return total + orderTotal;
                     }, 0)
                     .toFixed(2)}
@@ -232,19 +237,35 @@ const UserOrdersAdmin = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {order.items.map((item, index) => (
-                          <tr key={index}>
-                            <td>{item.productId.name}</td>
-                            <td>{item.productId.price.toFixed(2)}€</td>
-                            <td>{item.quantity}</td>
-                            <td>
-                              {(item.productId.price * item.quantity).toFixed(
-                                2
-                              )}
-                              €
-                            </td>
-                          </tr>
-                        ))}
+                        {order.items.map((item, index) => {
+                          const isValidProduct =
+                            item.productId &&
+                            typeof item.productId === "object";
+                          return (
+                            <tr key={index}>
+                              <td>
+                                {isValidProduct
+                                  ? item.productId.name
+                                  : "Produit indisponible"}
+                              </td>
+                              <td>
+                                {isValidProduct
+                                  ? `${
+                                      item.productId.price?.toFixed(2) || "N/A"
+                                    }€`
+                                  : "N/A"}
+                              </td>
+                              <td>{item.quantity}</td>
+                              <td>
+                                {isValidProduct && item.productId.price
+                                  ? `${(
+                                      item.productId.price * item.quantity
+                                    ).toFixed(2)}€`
+                                  : "N/A"}
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                       <tfoot>
                         <tr>
@@ -253,11 +274,18 @@ const UserOrdersAdmin = () => {
                           </td>
                           <td className="order-total">
                             {order.items
-                              .reduce(
-                                (acc, item) =>
-                                  acc + item.productId.price * item.quantity,
-                                0
-                              )
+                              .reduce((acc, item) => {
+                                if (
+                                  item.productId &&
+                                  typeof item.productId === "object" &&
+                                  item.productId.price
+                                ) {
+                                  return (
+                                    acc + item.productId.price * item.quantity
+                                  );
+                                }
+                                return acc;
+                              }, 0)
                               .toFixed(2)}
                             €
                           </td>

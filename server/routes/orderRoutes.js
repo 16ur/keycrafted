@@ -123,7 +123,6 @@ router.patch("/:id/status", validateTokenHandler, async (req, res) => {
   }
 });
 
-
 router.get("/user/:userId", validateTokenHandler, async (req, res) => {
   try {
     if (req.user.role !== "admin") {

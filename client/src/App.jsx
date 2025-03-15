@@ -26,6 +26,7 @@ import AdminOrders from "./Components/AdminOrders/AdminOrders.jsx";
 import UserOrdersAdmin from "./Components/UserOrdersAdmin/UserOrdersAdmin.jsx";
 import SearchResults from "./Components/SearchResults/SearchResults";
 import UserProfile from "./Components/UserProfile/UserProfile";
+import AdminPromo from "./Components/AdminPromo/AdminPromo";
 
 import axios from "axios";
 
@@ -74,6 +75,7 @@ function App() {
               <Route path="/brand/:brand" element={<BrandPage />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/user/profile" element={<UserProfile />} />
+              <Route path="/admin/promo-codes" element={<AdminPromo />} />
             </Routes>
           </div>
           <ConditionalFooter />

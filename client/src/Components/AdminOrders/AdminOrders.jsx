@@ -16,7 +16,7 @@ const AdminOrders = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchFilter, setSearchFilter] = useState("all");
-  const [viewMode, setViewMode] = useState("pending"); 
+  const [viewMode, setViewMode] = useState("pending");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -170,126 +170,188 @@ const AdminOrders = () => {
     setSearchFilter("all");
   };
 
-  const renderOrder = (order) => (
-    <div key={order._id} className="order-card">
-      <div className="order-header">
-        <h3>Commande #{order._id}</h3>
-        <span className={`status-badge ${order.status}`}>
-          {order.status === "pending" && "En attente"}
-          {order.status === "shipped" && "Expédiée"}
-          {order.status === "delivered" && "Livrée"}
-        </span>
-      </div>
+  const renderOrder = (order) => {
+    const hasValidItems =
+      order.items &&
+      order.items.every(
+        (item) =>
+          item.productId &&
+          typeof item.productId === "object" &&
+          item.productId.price
+      );
 
-      <div className="order-info">
-        <p>
-          <strong>Date:</strong> {formatDate(order.createdAt)}
-        </p>
-        <p>
-          <strong>Client:</strong>{" "}
-          <a
-            href={`/admin/user/${order.userId}/orders`}
-            className="user-link"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(`/admin/user/${order.userId}/orders`, {
-                state: {
-                  userName: order.fullName,
-                  userEmail: order.email,
-                },
-              });
-            }}
-          >
-            {order.fullName}
-          </a>
-        </p>
-        <p>
-          <strong>Email:</strong> {order.email}
-        </p>
-        <p>
-          <strong>Adresse:</strong> {order.address}
-        </p>
-        <p>
-          <strong>Téléphone:</strong> {order.phoneNumber}
-        </p>
-        {order.additionalNotes && (
+    const orderTotal = hasValidItems
+      ? order.items
+          .reduce((acc, item) => acc + item.productId.price * item.quantity, 0)
+          .toFixed(2)
+      : "N/A";
+    return (
+      <div key={order._id} className="order-card">
+        <div className="order-header">
+          <h3>Commande #{order._id}</h3>
+          <span className={`status-badge ${order.status}`}>
+            {order.status === "pending" && "En attente"}
+            {order.status === "shipped" && "Expédiée"}
+            {order.status === "delivered" && "Livrée"}
+          </span>
+        </div>
+
+        <div className="order-info">
           <p>
-            <strong>Notes:</strong> {order.additionalNotes}
+            <strong>Date:</strong> {formatDate(order.createdAt)}
           </p>
-        )}
-      </div>
+          <p>
+            <strong>Client:</strong>{" "}
+            <a
+              href={`/admin/user/${order.userId}/orders`}
+              className="user-link"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/admin/user/${order.userId}/orders`, {
+                  state: {
+                    userName: order.fullName,
+                    userEmail: order.email,
+                  },
+                });
+              }}
+            >
+              {order.fullName}
+            </a>
+          </p>
+          <p>
+            <strong>Email:</strong> {order.email}
+          </p>
+          <p>
+            <strong>Adresse:</strong> {order.address}
+          </p>
+          <p>
+            <strong>Téléphone:</strong> {order.phoneNumber}
+          </p>
+          {order.additionalNotes && (
+            <p>
+              <strong>Notes:</strong> {order.additionalNotes}
+            </p>
+          )}
 
-      <div className="order-items">
-        <h4>Produits commandés</h4>
-        <table className="items-table">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th>Prix unitaire</th>
-              <th>Quantité</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {order.items.map((item, index) => (
-              <tr key={index}>
-                <td>{item.productId.name}</td>
-                <td>{item.productId.price.toFixed(2)}€</td>
-                <td>{item.quantity}</td>
-                <td>{(item.productId.price * item.quantity).toFixed(2)}€</td>
+          {order.promoCode && (
+            <p className="promo-info">
+              <strong>Code promo appliqué:</strong> {order.promoCode.code}
+              (-{order.promoCode.discountPercentage}%)
+            </p>
+          )}
+        </div>
+
+        <div className="order-items">
+          <h4>Produits commandés</h4>
+          <table className="items-table">
+            <thead>
+              <tr>
+                <th>Produit</th>
+                <th>Prix unitaire</th>
+                <th>Quantité</th>
+                <th>Total</th>
               </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="3" className="total-label">
-                Total
-              </td>
-              <td className="order-total">
-                {order.items
-                  .reduce(
-                    (acc, item) => acc + item.productId.price * item.quantity,
-                    0
-                  )
-                  .toFixed(2)}
-                €
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {order.items.map((item, index) => {
+                const isValidProduct =
+                  item.productId &&
+                  typeof item.productId === "object" &&
+                  item.productId.price !== undefined;
+                const productName = isValidProduct
+                  ? item.productId.name
+                  : "Produit inconnu";
+                const productPrice = isValidProduct
+                  ? item.productId.price.toFixed(2)
+                  : "N/A";
+                const itemTotal = isValidProduct
+                  ? (item.productId.price * item.quantity).toFixed(2)
+                  : "N/A";
 
-      <div className="order-actions">
-        <button
-          className={`status-button pending ${
-            order.status === "pending" ? "active" : ""
-          }`}
-          onClick={() => updateOrderStatus(order._id, "pending")}
-          disabled={order.status === "pending"}
-        >
-          En attente
-        </button>
-        <button
-          className={`status-button shipped ${
-            order.status === "shipped" ? "active" : ""
-          }`}
-          onClick={() => updateOrderStatus(order._id, "shipped")}
-          disabled={order.status === "shipped"}
-        >
-          Expédiée
-        </button>
-        <button
-          className={`status-button delivered ${
-            order.status === "delivered" ? "active" : ""
-          }`}
-          onClick={() => updateOrderStatus(order._id, "delivered")}
-          disabled={order.status === "delivered"}
-        >
-          Livrée
-        </button>
+                return (
+                  <tr key={index}>
+                    <td>{productName}</td>
+                    <td>{productPrice}€</td>
+                    <td>{item.quantity}</td>
+                    <td>{itemTotal}€</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan="3" className="total-label">
+                  Sous-total
+                </td>
+                <td className="order-total">{orderTotal}€</td>
+              </tr>
+              {order.promoCode && (
+                <>
+                  <tr className="discount-row">
+                    <td colSpan="3" className="total-label">
+                      Remise ({order.promoCode.discountPercentage}%)
+                    </td>
+                    <td className="discount-amount">
+                      {hasValidItems
+                        ? `-${(
+                            (orderTotal * order.promoCode.discountPercentage) /
+                            100
+                          ).toFixed(2)}€`
+                        : "N/A"}
+                    </td>
+                  </tr>
+                  <tr className="final-total">
+                    <td colSpan="3" className="total-label">
+                      <strong>Total après remise</strong>
+                    </td>
+                    <td className="order-total">
+                      {hasValidItems
+                        ? (
+                            orderTotal *
+                            (1 - order.promoCode.discountPercentage / 100)
+                          ).toFixed(2)
+                        : "N/A"}
+                      €
+                    </td>
+                  </tr>
+                </>
+              )}
+            </tfoot>
+          </table>
+        </div>
+
+        <div className="order-actions">
+          <button
+            className={`status-button pending ${
+              order.status === "pending" ? "active" : ""
+            }`}
+            onClick={() => updateOrderStatus(order._id, "pending")}
+            disabled={order.status === "pending"}
+          >
+            En attente
+          </button>
+          <button
+            className={`status-button shipped ${
+              order.status === "shipped" ? "active" : ""
+            }`}
+            onClick={() => updateOrderStatus(order._id, "shipped")}
+            disabled={order.status === "shipped"}
+          >
+            Expédiée
+          </button>
+          <button
+            className={`status-button delivered ${
+              order.status === "delivered" ? "active" : ""
+            }`}
+            onClick={() => updateOrderStatus(order._id, "delivered")}
+            disabled={order.status === "delivered"}
+          >
+            Livrée
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   if (loading)
     return (

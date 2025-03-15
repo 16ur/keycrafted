@@ -78,6 +78,7 @@ export const CartProvider = ({ children }) => {
         },
       });
       setCart({ items: [] });
+      setPromoCode(null);
       toast.success("Panier vidé !");
     } catch (error) {
       console.error("Erreur lors de la suppression du panier :", error);
@@ -181,7 +182,7 @@ export const CartProvider = ({ children }) => {
         applyPromoCode,
         removePromoCode,
         calculatePrices,
-        getTotalItems, 
+        getTotalItems,
       }}
     >
       {children}
