@@ -29,7 +29,6 @@ const CartPage = () => {
   const [promoInput, setPromoInput] = useState("");
   const [isApplyingPromo, setIsApplyingPromo] = useState(false);
 
-  // Calculer les prix avec potentiellement une remise
   const { subtotal, discount, discountedSubtotal, taxes, finalPrice } =
     calculatePrices();
 
@@ -53,7 +52,6 @@ const CartPage = () => {
     }
   };
 
-  // Si le panier est vide
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
       <div>
