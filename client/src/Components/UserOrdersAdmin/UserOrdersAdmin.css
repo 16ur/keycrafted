@@ -1,0 +1,275 @@
+.user-orders-admin-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+}
+
+.user-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.user-details {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.user-details h1 {
+  color: #2c666e;
+  margin-bottom: 0.5rem;
+}
+
+.user-email {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+.back-button {
+  padding: 0.6rem 1.2rem;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  margin-bottom: 1.5rem;
+  display: block; /* Pour qu'il prenne sa propre ligne */
+}
+
+.back-button:hover {
+  background-color: #e9ecef;
+}
+
+.orders-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.summary-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.summary-card h3 {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.summary-number {
+  color: #2c666e;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.summary-date {
+  color: #2c666e;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Réutiliser les styles des commandes depuis AdminOrders.css */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.order-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.order-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #2c666e;
+}
+
+.status-badge {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.shipped {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.delivered {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.order-info {
+  margin-bottom: 1.5rem;
+}
+
+.order-info p {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.order-info p strong {
+  color: #333;
+  margin-right: 0.5rem;
+}
+
+.order-items {
+  margin-bottom: 1.5rem;
+}
+
+.order-items h4 {
+  margin-bottom: 1rem;
+  color: #2c666e;
+  font-size: 1.2rem;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items-table th,
+.items-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.items-table th {
+  background-color: #f9f9f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.items-table tfoot {
+  font-weight: 600;
+}
+
+.total-label {
+  text-align: right;
+}
+
+.order-total {
+  font-weight: 700;
+  color: #2c666e;
+}
+
+.order-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.status-button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.status-button.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-button.shipped {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-button.delivered {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.status-button.active {
+  transform: scale(1.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 1rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+
+.no-orders {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  margin: 3rem 0;
+}
+
+@media (max-width: 768px) {
+  .user-info-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .back-button {
+    align-self: flex-start;
+  }
+
+  .order-actions {
+    flex-direction: column;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .status-badge {
+    margin-top: 0.5rem;
+  }
+
+  .items-table {
+    font-size: 0.9rem;
+  }
+}

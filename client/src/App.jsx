@@ -23,6 +23,7 @@ import UserOrders from "./Components/UserOrders/UserOrders.jsx";
 import AboutUs from "./Components/AboutUs/AboutUs.jsx";
 import BrandPage from "./Components/BrandPage/BrandPage.jsx";
 import AdminOrders from "./Components/AdminOrders/AdminOrders.jsx";
+import UserOrdersAdmin from "./Components/UserOrdersAdmin/UserOrdersAdmin.jsx";
 import axios from "axios";
 
 function App() {
@@ -60,6 +61,10 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/admin/orders" element={<AdminOrders />} />
+              <Route
+                path="/admin/user/:userId/orders"
+                element={<UserOrdersAdmin />}
+              />
               <Route path="/confirmation" element={<ConfirmationPage />} />
               <Route path="/user/orders" element={<UserOrders />} />
               <Route path="/about-us" element={<AboutUs />} />

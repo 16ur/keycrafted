@@ -80,7 +80,6 @@ router.get("/user-orders", validateTokenHandler, async (req, res) => {
   }
 });
 
-
 router.get("/all", validateTokenHandler, async (req, res) => {
   try {
     if (req.user.role !== "admin") {
@@ -120,6 +119,26 @@ router.patch("/:id/status", validateTokenHandler, async (req, res) => {
     res.status(200).json(order);
   } catch (error) {
     console.error("Erreur lors de la mise à jour du statut:", error);
+    res.status(500).json({ message: "Erreur serveur" });
+  }
+});
+
+
+router.get("/user/:userId", validateTokenHandler, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Accès non autorisé" });
+    }
+
+    const { userId } = req.params;
+
+    const orders = await Order.find({ userId })
+      .populate("items.productId")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des commandes:", error);
     res.status(500).json({ message: "Erreur serveur" });
   }
 });
