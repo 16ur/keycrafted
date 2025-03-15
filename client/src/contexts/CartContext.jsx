@@ -1,5 +1,3 @@
-// Ajoutez la fonction getTotalItems et assurez-vous qu'elle est exportée dans le contexte
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -145,7 +143,6 @@ export const CartProvider = ({ children }) => {
     setPromoCode(null);
   };
 
-  // Calculer les prix avec la réduction
   const calculatePrices = () => {
     const subtotal =
       cart?.items?.reduce(
@@ -184,7 +181,7 @@ export const CartProvider = ({ children }) => {
         applyPromoCode,
         removePromoCode,
         calculatePrices,
-        getTotalItems, // Assurez-vous d'exporter cette fonction
+        getTotalItems, 
       }}
     >
       {children}
