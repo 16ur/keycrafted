@@ -1,6 +1,8 @@
+// Ajoutez la fonction getTotalItems et assurez-vous qu'elle est exportée dans le contexte
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const CartContext = createContext();
@@ -8,6 +10,7 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
+  const [promoCode, setPromoCode] = useState(null);
 
   const fetchCart = async () => {
     try {
@@ -109,23 +112,83 @@ export const CartProvider = ({ children }) => {
     }
     return cart.items.reduce((total, item) => total + item.quantity, 0);
   };
+
+  const applyPromoCode = async (code) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/promo/apply",
+        { code },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setPromoCode(response.data);
+      return { success: true, message: response.data.message };
+    } catch (error) {
+      console.error("Erreur lors de l'application du code promo:", error);
+      return {
+        success: false,
+        message:
+          error.response?.data?.message ||
+          "Erreur lors de l'application du code promo",
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removePromoCode = () => {
+    setPromoCode(null);
+  };
+
+  // Calculer les prix avec la réduction
+  const calculatePrices = () => {
+    const subtotal =
+      cart?.items?.reduce(
+        (acc, item) => acc + item.productId.price * item.quantity,
+        0
+      ) || 0;
+
+    let discount = 0;
+    if (promoCode) {
+      discount = (subtotal * promoCode.discountPercentage) / 100;
+    }
+
+    const discountedSubtotal = subtotal - discount;
+    const taxes = discountedSubtotal * 0.2;
+    const finalPrice = discountedSubtotal + taxes;
+
+    return {
+      subtotal,
+      discount,
+      discountedSubtotal,
+      taxes,
+      finalPrice,
+    };
+  };
+
   return (
-    <>
-      <ToastContainer />
-      <CartContext.Provider
-        value={{
-          cart,
-          addToCart,
-          removeFromCart,
-          updateQuantity,
-          clearCart,
-          getTotalItems,
-          loading,
-        }}
-      >
-        {children}
-      </CartContext.Provider>
-    </>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        loading,
+        promoCode,
+        applyPromoCode,
+        removePromoCode,
+        calculatePrices,
+        getTotalItems, // Assurez-vous d'exporter cette fonction
+      }}
+    >
+      {children}
+    </CartContext.Provider>
   );
 };
 

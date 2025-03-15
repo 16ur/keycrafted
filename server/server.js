@@ -7,6 +7,7 @@ const cartRoutes = require("./routes/cartRoutes");
 const productRoutes = require("./routes/productsRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const promoRoutes = require("./routes/promoCodeRoutes");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -99,6 +100,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/promo", promoRoutes);
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
