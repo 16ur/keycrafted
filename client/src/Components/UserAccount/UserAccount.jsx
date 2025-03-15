@@ -1,41 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./UserAccount.css";
+import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import UserOrders from "../UserOrders/UserOrders";
+import "./UserAccount.css";
+import { FaUser, FaEnvelope, FaSignOutAlt } from "react-icons/fa";
 
 const UserAccount = () => {
   const [user, setUser] = useState({});
   const [error, setError] = useState("");
-  const [purchaseHistory, setPurchaseHistory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/auth/user/login");
-      return;
-    }
-
     const fetchUser = async () => {
       try {
-        const response = await fetch(
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/auth/user/login");
+          return;
+        }
+
+        const response = await axios.get(
           "http://localhost:8080/api/users/current",
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
           }
         );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch user");
-        }
-
-        const data = await response.json();
-        setUser(data);
+        setUser(response.data);
       } catch (error) {
         setError(error.message);
       }
@@ -52,21 +46,31 @@ const UserAccount = () => {
     }
   };
 
+  const getInitial = (name) => {
+    return name ? name.charAt(0).toUpperCase() : "U";
+  };
+
   return (
     <div>
       <Navbar />
       <div className="user-account-container">
         <div className="user-info-card">
+          <div className="user-avatar-container">
+            <div className="user-avatar">{getInitial(user.username)}</div>
+          </div>
           <h1>Bienvenue, {user.username || "Utilisateur"} !</h1>
           <div className="user-details">
-            <p>
-              <strong>Nom d'utilisateur :</strong> {user.username}
-            </p>
-            <p>
-              <strong>Email :</strong> {user.email}
-            </p>
+            <div className="user-detail-item">
+              <FaUser className="user-detail-icon" />
+              <span>{user.username}</span>
+            </div>
+            <div className="user-detail-item">
+              <FaEnvelope className="user-detail-icon" />
+              <span>{user.email}</span>
+            </div>
           </div>
           <button className="logout-button" onClick={handleLogout}>
+            <FaSignOutAlt className="logout-icon" />
             Se déconnecter
           </button>
         </div>

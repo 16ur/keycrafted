@@ -193,7 +193,6 @@
   font-weight: 600;
 }
 
-/* Styles pour les onglets */
 .order-tabs {
   display: flex;
   margin-bottom: 2rem;
@@ -231,7 +230,6 @@
   background-color: #2c666e;
 }
 
-/* Styles pour le résumé */
 .orders-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -334,7 +332,6 @@
   }
 }
 
-/* Ajouter ces styles pour la barre de recherche après les styles existants */
 
 .search-container {
   margin-bottom: 2rem;
@@ -373,7 +370,7 @@
 
 .clear-search-btn {
   position: absolute;
-  right: 160px; /* Ajustez selon la largeur du select */
+  right: 160px; 
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -399,7 +396,6 @@
   font-style: italic;
 }
 
-/* Ajouter ces styles dans la section @media pour rendre la barre de recherche responsive */
 @media (max-width: 768px) {
   .search-bar {
     flex-direction: column;

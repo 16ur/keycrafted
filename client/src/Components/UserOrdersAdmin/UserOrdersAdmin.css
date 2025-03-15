@@ -36,7 +36,7 @@
   font-weight: 500;
   transition: all 0.3s;
   margin-bottom: 1.5rem;
-  display: block; /* Pour qu'il prenne sa propre ligne */
+  display: block; 
 }
 
 .back-button:hover {
@@ -77,7 +77,6 @@
   margin: 0;
 }
 
-/* Réutiliser les styles des commandes depuis AdminOrders.css */
 .orders-list {
   display: flex;
   flex-direction: column;

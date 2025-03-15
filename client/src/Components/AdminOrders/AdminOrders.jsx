@@ -319,7 +319,6 @@ const AdminOrders = () => {
         <h1 className="admin-orders-title">Gestion des commandes</h1>
         <ToastContainer position="top-right" />
 
-        {/* Barre de recherche */}
         <div className="search-container">
           <div className="search-bar">
             <input
@@ -356,7 +355,6 @@ const AdminOrders = () => {
           </div>
         </div>
 
-        {/* Onglets pour basculer entre les commandes par statut */}
         <div className="order-tabs">
           <button
             className={`tab-button ${viewMode === "pending" ? "active" : ""}`}
@@ -378,7 +376,6 @@ const AdminOrders = () => {
           </button>
         </div>
 
-        {/* Affichage des commandes en fonction de l'onglet actif */}
         {viewMode === "pending" ? (
           pendingOrders.length === 0 ? (
             <p className="no-orders">
@@ -415,7 +412,6 @@ const AdminOrders = () => {
           </div>
         )}
 
-        {/* Résumé des commandes */}
         <div className="orders-summary">
           <div className="summary-card">
             <div className="summary-badge pending"></div>

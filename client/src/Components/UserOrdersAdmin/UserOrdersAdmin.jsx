@@ -142,7 +142,6 @@ const UserOrdersAdmin = () => {
       <div className="user-orders-admin-container">
         <ToastContainer position="top-right" />
 
-        {/* Bouton de retour en dehors du header */}
         <button
           onClick={() => navigate("/admin/orders")}
           className="back-button"
@@ -150,7 +149,6 @@ const UserOrdersAdmin = () => {
           &larr; Retour à toutes les commandes
         </button>
 
-        {/* Header séparé pour les infos utilisateur */}
         <div className="user-details">
           <h1>Commandes de {userDetails.name}</h1>
           {userDetails.email && (

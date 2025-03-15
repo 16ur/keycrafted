@@ -210,8 +210,6 @@
   }
 }
 
-/* Ajouter ces styles pour la barre de recherche */
-
 .search-container {
   margin-bottom: 2rem;
 }
@@ -249,7 +247,7 @@
 
 .clear-search-btn {
   position: absolute;
-  right: 160px; /* Ajustez selon la largeur du select */
+  right: 160px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -295,7 +293,6 @@
     right: 10px;
   }
 }
-/* Modifier les styles des onglets */
 
 .order-tabs {
   display: flex;
@@ -334,7 +331,6 @@
   background-color: #2c666e;
 }
 
-/* Ajouter des styles pour le résumé */
 .orders-summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

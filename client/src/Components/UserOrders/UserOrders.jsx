@@ -233,7 +233,6 @@ const UserOrders = () => {
       <ToastContainer position="top-right" />
       <h2 className="user-orders-title">Mes commandes</h2>
 
-      {/* Barre de recherche */}
       <div className="search-container">
         <div className="search-bar">
           <input
@@ -269,7 +268,6 @@ const UserOrders = () => {
         </div>
       </div>
 
-      {/* Onglets pour filtrer par statut */}
       <div className="order-tabs">
         <button
           className={`tab-button ${viewMode === "pending" ? "active" : ""}`}
@@ -295,7 +293,6 @@ const UserOrders = () => {
         <p className="no-orders">Vous n'avez pas encore passé de commande.</p>
       ) : (
         <>
-          {/* Affichage des commandes selon l'onglet sélectionné */}
           {viewMode === "pending" ? (
             pendingOrders.length === 0 ? (
               <p className="no-orders">
@@ -326,7 +323,6 @@ const UserOrders = () => {
             </div>
           )}
 
-          {/* Résumé en bas de page */}
           <div className="orders-summary">
             <div className="summary-card">
               <div className="summary-badge pending"></div>
