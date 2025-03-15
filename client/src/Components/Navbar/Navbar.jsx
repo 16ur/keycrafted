@@ -265,6 +265,13 @@ function Navbar() {
                       <FaTicketAlt className="dropdown-icon" />
                       Codes promotionnels
                     </div>
+                    <div
+                      className="dropdown-item"
+                      onClick={() => navigateToAdminPage("/admin/users")}
+                    >
+                      <FaCog className="dropdown-icon" />
+                      Gestions des utilisateurs
+                    </div>
                   </div>
                 )}
               </div>
