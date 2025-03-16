@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
-import "./CheckoutPage.css";
 import { useCart } from "../../contexts/CartContext";
+import "./CheckoutPage.css";
+import StripeWrapper from "../../StripeWrapper";
+import StripeCheckout from "../StripeCheckout/StripeCheckout";
 
 const CheckoutPage = () => {
-  const navigate = useNavigate();
-  const { cart, clearCart } = useCart();
-  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
     phone: "",
     additionalNotes: "",
   });
-  const [loading, setLoading] = useState(true);
+  const [userEmail, setUserEmail] = useState("");
+  const [orderId, setOrderId] = useState(null);
+  const [showStripeForm, setShowStripeForm] = useState(false);
+
+  const { cart, clearCart, promoCode } = useCart();
+  const navigate = useNavigate();
 
   const totalPrice =
     cart?.items?.reduce(
@@ -25,7 +30,11 @@ const CheckoutPage = () => {
       0
     ) || 0;
   const taxes = totalPrice * 0.2;
-  const finalPrice = totalPrice + taxes;
+
+  const discount = promoCode
+    ? (totalPrice * promoCode.discountPercentage) / 100
+    : 0;
+  const finalPrice = totalPrice + taxes - discount;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -84,7 +93,8 @@ const CheckoutPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
+
+      const orderResponse = await axios.post(
         "http://localhost:8080/api/orders",
         {
           items: cart.items.map((item) => ({
@@ -96,6 +106,7 @@ const CheckoutPage = () => {
           fullName: formData.fullName,
           email: userEmail,
           additionalNotes: formData.additionalNotes,
+          promoCode: promoCode,
         },
         {
           headers: {
@@ -104,25 +115,43 @@ const CheckoutPage = () => {
         }
       );
 
-      toast.success("Commande réussie !");
-      clearCart();
-
-      navigate("/confirmation", {
-        state: {
-          order: {
-            _id: response.data.order._id,
-            items: cart.items,
-            total: finalPrice,
-            fullName: formData.fullName,
-            address: formData.address,
-            phoneNumber: formData.phone,
-          },
-        },
-      });
+      setOrderId(orderResponse.data.order._id);
+      setShowStripeForm(true);
     } catch (error) {
       console.error("Erreur lors de la commande :", error);
-      toast.error("Une erreur est survenue lors de la commande.");
+      toast.error(
+        error.response?.data?.message ||
+          "Une erreur est survenue lors de la commande."
+      );
     }
+  };
+
+  const handlePaymentSuccess = (payload) => {
+    toast.success("Paiement traité avec succès!");
+    clearCart();
+
+    navigate("/confirmation", {
+      state: {
+        order: {
+          _id: orderId,
+          items: cart.items,
+          total: finalPrice,
+          fullName: formData.fullName,
+          address: formData.address,
+          phoneNumber: formData.phone,
+          paymentInfo: {
+            transactionId: payload.paymentIntent.id,
+            paymentMethod: "card",
+            date: new Date(),
+          },
+        },
+      },
+    });
+  };
+
+  const handlePaymentError = (error) => {
+    console.error("Erreur de paiement:", error);
+    toast.error("Échec du paiement. Veuillez réessayer.");
   };
 
   if (loading) {
@@ -169,83 +198,106 @@ const CheckoutPage = () => {
               <p>
                 Taxes (20%) : <span>€{taxes.toFixed(2)}</span>
               </p>
+              {promoCode && (
+                <p className="discount-info">
+                  Remise ({promoCode.discountPercentage}%) :{" "}
+                  <span>-€{discount.toFixed(2)}</span>
+                </p>
+              )}
               <h3 className="checkout-total">
                 Total : <span>€{finalPrice.toFixed(2)}</span>
               </h3>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit} className="checkout-form">
-            <h2>Informations de livraison</h2>
-            <div className="form-group">
-              <label>Nom complet</label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleInputChange}
-                required
-                placeholder="Votre nom complet"
-              />
-              <small className="form-info">
-                {!formData.fullName &&
-                  "Remplissez votre profil pour sauvegarder ces informations"}
-              </small>
+          {showStripeForm && orderId ? (
+            <div className="payment-section">
+              <h2>Paiement sécurisé</h2>
+              <StripeWrapper>
+                <StripeCheckout
+                  amount={finalPrice}
+                  orderId={orderId}
+                  onPaymentSuccess={handlePaymentSuccess}
+                  onPaymentError={handlePaymentError}
+                />
+              </StripeWrapper>
             </div>
-            <div className="form-group">
-              <label>Adresse</label>
-              <input
-                type="text"
-                name="address"
-                maxLength={100}
-                value={formData.address}
-                onChange={handleInputChange}
-                required
-                placeholder="Adresse complète: rue, code postal, ville"
-              />
-              <small className="form-info">
-                {!formData.address &&
-                  "Remplissez votre profil pour sauvegarder ces informations"}
-              </small>
-            </div>
-            <div className="form-group">
-              <label>Numéro de téléphone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                required
-                placeholder="Votre numéro de téléphone"
-              />
-              <small className="form-info">
-                {!formData.phone &&
-                  "Remplissez votre profil pour sauvegarder ces informations"}
-              </small>
-            </div>
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                value={userEmail}
-                readOnly
-                className="readonly-input"
-              />
-              <small className="form-info">Email associé à votre compte</small>
-            </div>
-            <div className="form-group">
-              <label>Notes supplémentaires</label>
-              <textarea
-                name="additionalNotes"
-                value={formData.additionalNotes}
-                onChange={handleInputChange}
-                placeholder="Instructions spéciales pour la livraison (optionnel)"
-              ></textarea>
-            </div>
-            <button type="submit" className="checkout-button">
-              Valider ma commande
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit} className="checkout-form">
+              <h2>Informations de livraison</h2>
+              <div className="form-group">
+                <label>Nom complet</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Votre nom complet"
+                />
+                <small className="form-info">
+                  {!formData.fullName &&
+                    "Remplissez votre profil pour sauvegarder ces informations"}
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Adresse</label>
+                <input
+                  type="text"
+                  name="address"
+                  maxLength={100}
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Adresse complète: rue, code postal, ville"
+                />
+                <small className="form-info">
+                  {!formData.address &&
+                    "Remplissez votre profil pour sauvegarder ces informations"}
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Numéro de téléphone</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Votre numéro de téléphone"
+                />
+                <small className="form-info">
+                  {!formData.phone &&
+                    "Remplissez votre profil pour sauvegarder ces informations"}
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  value={userEmail}
+                  readOnly
+                  className="readonly-input"
+                />
+                <small className="form-info">
+                  Email associé à votre compte
+                </small>
+              </div>
+              <div className="form-group">
+                <label>Notes supplémentaires</label>
+                <textarea
+                  name="additionalNotes"
+                  value={formData.additionalNotes}
+                  onChange={handleInputChange}
+                  placeholder="Instructions spéciales pour la livraison (optionnel)"
+                ></textarea>
+              </div>
+
+              <button type="submit" className="checkout-button">
+                Continuer vers le paiement
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </div>

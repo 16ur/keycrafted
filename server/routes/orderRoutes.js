@@ -5,9 +5,17 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const { sendOrderConfirmationEmail } = require("../mailer");
 
+
 router.post("/", validateTokenHandler, async (req, res) => {
-  const { items, address, phoneNumber, fullName, email, additionalNotes } =
-    req.body;
+  const {
+    items,
+    address,
+    phoneNumber,
+    fullName,
+    email,
+    additionalNotes,
+    promoCode,
+  } = req.body;
 
   if (!items || items.length === 0) {
     return res.status(400).json({ message: "Le panier est vide." });
@@ -20,29 +28,14 @@ router.post("/", validateTokenHandler, async (req, res) => {
       items.map(async (item) => {
         const product = await Product.findById(item.productId);
         if (!product) {
-          throw new Error(`Produit avec l'ID ${item.productId} introuvable`);
-        }
-        if (product.stock < item.quantity) {
-          throw new Error(`Stock insuffisant pour le produit ${product.name}`);
+          throw new Error(`Produit non trouvé: ${item.productId}`);
         }
         return {
-          ...item,
-          productId: product,
+          productId: item.productId,
+          quantity: item.quantity,
         };
       })
     );
-
-    console.log("Produits peuplés :", populatedItems);
-
-    await Promise.all(
-      populatedItems.map(async (item) => {
-        const product = item.productId;
-        product.stock -= item.quantity;
-        await product.save();
-      })
-    );
-
-    console.log("Quantité des produits mise à jour");
 
     const newOrder = new Order({
       userId: req.user.id,
@@ -54,12 +47,27 @@ router.post("/", validateTokenHandler, async (req, res) => {
       additionalNotes,
       status: "pending",
       createdAt: new Date(),
+      payment: {
+        method: "card",
+        status: "pending",
+      },
+      promoCode: promoCode,
     });
 
     await newOrder.save();
-    console.log("Commande sauvegardée :", newOrder);
 
-    sendOrderConfirmationEmail(email, newOrder);
+    try {
+      await sendOrderConfirmationEmail(email, {
+        orderId: newOrder._id,
+        items: newOrder.items,
+        total: 0,
+        address,
+        fullName,
+      });
+    } catch (emailError) {
+      console.error("Erreur lors de l'envoi de l'email:", emailError);
+    }
+
     res
       .status(201)
       .json({ message: "Commande créée avec succès.", order: newOrder });

@@ -8,6 +8,8 @@ const productRoutes = require("./routes/productsRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const promoRoutes = require("./routes/promoCodeRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
+
 const cors = require("cors");
 require("dotenv").config();
 
@@ -101,6 +103,8 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/promo", promoRoutes);
+app.use("/api/stripe", stripeRoutes);
+app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 
 app.listen(8080, () => {
   console.log("Server is running on port 8080");
