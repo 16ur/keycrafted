@@ -3,24 +3,25 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import Filter from "../Filter/Filter";
+import { FaFilter } from "react-icons/fa";
 import "../ProductsPage/ProductsPage.css";
 import "../Filter/Filter.css";
+import "./BrandPage.css";
 
 const BrandPage = () => {
   const { brand } = useParams();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [error, setError] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductsByBrand = async () => {
       try {
-        console.log(`Fetching products for brand: ${brand}`);
         const response = await axios.get(
           `http://localhost:8080/api/products/brand/${brand}`
         );
-        console.log("Réponse de l'API :", response.data);
         setProducts(response.data);
         setFilteredProducts(response.data);
       } catch (err) {
@@ -63,42 +64,86 @@ const BrandPage = () => {
     setFilteredProducts(filtered);
   };
 
+  const toggleFilterOnMobile = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
+
   return (
     <div>
       <Navbar />
-      <div className="brand-title-container">
-        <h1 className="brand-title">Produits de la marque {brand}</h1>
+      <div className="category-title-container">
+        <h1 className="category-title">Produits de la marque {brand}</h1>
       </div>
-      {error && <p>{error}</p>}
-      <Filter onApplyFilters={applyFilters} />
-      <p className="filter-container">
-        {filteredProducts.length > 1
-          ? filteredProducts.length + " " + "résultats"
-          : filteredProducts.length + " " + "résultat"}{" "}
-      </p>
+      {error && <p className="error-message">{error}</p>}
 
-      <div className="page-container">
-        <div className="products-grid">
-          {filteredProducts.map((product) => (
-            <div key={product._id} className="product-card">
-              <button
-                className="imageButton"
-                onClick={() =>
-                  handleProductClick(product.category, product._id)
-                }
-              >
-                <img
-                  src={`http://localhost:8080${product.imageUrl}`}
-                  alt={"Ce produit n'a pas d'image"}
-                  className="product-image"
-                />
-              </button>
-              <strong>
-                <p>{product.name}</p>
-              </strong>
-              <p className="productPrice">€{product.price.toFixed(2)}</p>
+      <button className="filter-toggle-mobile" onClick={toggleFilterOnMobile}>
+        <FaFilter />{" "}
+        {isFilterOpen ? "Masquer les filtres" : "Afficher les filtres"}
+      </button>
+
+      <div className="products-page-container">
+        <div
+          className={`filter-container-sidebar ${isFilterOpen ? "open" : ""}`}
+        >
+          <Filter onApplyFilters={applyFilters} />
+        </div>
+
+        <div className="products-main">
+          <div className="products-header">
+            <p className="products-count">
+              {filteredProducts.length}{" "}
+              {filteredProducts.length > 1 ? "résultats" : "résultat"}
+            </p>
+          </div>
+
+          {filteredProducts.length > 0 ? (
+            <div className="products-grid">
+              {filteredProducts.map((product) => (
+                <div
+                  key={product._id}
+                  className="product-card"
+                  onClick={() =>
+                    handleProductClick(product.category, product._id)
+                  }
+                >
+                  {product.stock > 0 ? (
+                    <div className="stock-badge in-stock">En stock</div>
+                  ) : (
+                    <div className="stock-badge out-of-stock">Rupture</div>
+                  )}
+
+                  <div className="imageButton">
+                    <img
+                      src={`http://localhost:8080${product.imageUrl}`}
+                      alt={product.name || "Image du produit"}
+                      className="product-image"
+                    />
+                  </div>
+                  <div className="product-info">
+                    <div className="product-category">
+                      {product.brand || ""}
+                    </div>
+                    <h3 className="product-name">{product.name}</h3>
+                    <div className="product-price-container">
+                      <div className="productPrice">
+                        €{product.price.toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            <div className="no-products">
+              <p>Aucun produit ne correspond à vos critères de recherche.</p>
+              <button
+                className="clear-filters-btn"
+                onClick={() => applyFilters({})}
+              >
+                Effacer les filtres
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
